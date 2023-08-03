@@ -8,8 +8,15 @@
       <v-app-bar-title>DTTK</v-app-bar-title>
 
       <template v-slot:append>
-        <v-btn icon="mdi-theme-light-dark" @click="toggleTheme"></v-btn>
-        <v-btn icon="mdi-dots-vertical"></v-btn>
+        <v-tooltip text="Toggle Theme" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              icon="mdi-theme-light-dark"
+              @click="toggleTheme"
+            ></v-btn>
+          </template>
+        </v-tooltip>
       </template>
     </v-app-bar>
 

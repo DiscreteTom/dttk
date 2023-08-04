@@ -2,7 +2,7 @@
   <v-layout>
     <v-app-bar>
       <template v-slot:prepend>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click="drawer = !drawer" />
       </template>
 
       <v-app-bar-title>DTTK</v-app-bar-title>
@@ -20,6 +20,8 @@
       </template>
     </v-app-bar>
 
+    <v-navigation-drawer v-model="drawer"> </v-navigation-drawer>
+
     <v-main>
       <v-container fluid>
         <slot />
@@ -30,6 +32,8 @@
 
 <script setup lang="ts">
 import { useTheme } from "vuetify";
+
+const drawer = ref(false);
 
 const theme = useTheme();
 

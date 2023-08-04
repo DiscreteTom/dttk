@@ -106,7 +106,7 @@ const foreground = ref("#000000");
 </script>
 
 <style scoped>
-.code-input >>> input {
+.code-input :deep(input) {
   font-family: monospace;
 }
 </style>

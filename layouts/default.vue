@@ -20,7 +20,19 @@
       </template>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer"> </v-navigation-drawer>
+    <v-navigation-drawer v-model="drawer">
+      <v-list>
+        <v-list-item
+          v-for="page in pages"
+          :key="page.text"
+          exact
+          :to="page.to"
+          :prepend-icon="page.icon"
+        >
+          {{ page.text }}
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 
     <v-main>
       <v-container fluid>
@@ -36,6 +48,14 @@ import { useTheme } from "vuetify";
 const drawer = ref(false);
 
 const theme = useTheme();
+
+const pages = ref([
+  {
+    to: "/qrcode",
+    icon: "mdi-qrcode",
+    text: "QR Code Generator",
+  },
+]);
 
 function toggleTheme() {
   theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";

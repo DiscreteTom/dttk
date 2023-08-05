@@ -6,6 +6,7 @@
       </template>
 
       <v-app-bar-title>DTTK</v-app-bar-title>
+      <v-btn @click="emitter.emit('toast', '123')">123</v-btn>
 
       <template v-slot:append>
         <v-tooltip text="Toggle Theme" location="bottom">
@@ -82,6 +83,7 @@ import { VSonner, toast } from "vuetify-sonner";
 
 const theme = useTheme();
 const emitter = useEmitter();
+const settings = useSettings();
 
 const drawer = ref(false);
 const showSettings = ref(false);
@@ -99,7 +101,29 @@ function toggleTheme() {
   theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
 }
 
+function getSystemTheme() {
+  return window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
 onMounted(() => {
+  // load settings
+  settings.load();
+  invertToastColor.value = settings.current.invertToastColor;
+  toastDuration.value = settings.current.toastDuration;
+  theme.global.name.value =
+    settings.current.theme == "system"
+      ? getSystemTheme()
+      : settings.current.theme;
+
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (event) => {
+      theme.global.name.value = event.matches ? "dark" : "light";
+    });
+
   emitter.on("toast", (message: string) =>
     toast(message, {
       action: {

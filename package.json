@@ -12,6 +12,7 @@
     "@nuxt/devtools": "latest",
     "@types/node": "^18.17.1",
     "@types/uuid": "^9.0.2",
+    "@vite-pwa/nuxt": "^0.1.0",
     "nuxt": "^3.6.5"
   },
   "dependencies": {

@@ -29,12 +29,41 @@
 
     <!-- controls -->
     <div class="my-3">
-      <v-select
+      <v-slider
+        v-model="levelNumber"
         label="Level"
-        v-model="level"
-        :items="['L', 'M', 'Q', 'H']"
-        variant="solo"
-      />
+        :min="1"
+        :max="4"
+        show-ticks="always"
+        :ticks="levelMap"
+        :step="1"
+      >
+        <template v-slot:prepend>
+          <v-btn
+            size="small"
+            variant="text"
+            icon="mdi-minus"
+            @click="
+              levelNumber = (
+                levelNumber > 1 ? levelNumber - 1 : levelNumber
+              ) as LevelNumber
+            "
+          ></v-btn>
+        </template>
+
+        <template v-slot:append>
+          <v-btn
+            size="small"
+            variant="text"
+            icon="mdi-plus"
+            @click="
+              levelNumber = (
+                levelNumber < 4 ? levelNumber + 1 : levelNumber
+              ) as LevelNumber
+            "
+          ></v-btn>
+        </template>
+      </v-slider>
       <v-slider
         v-model="margin"
         label="Margin"
@@ -94,13 +123,22 @@ import QrcodeVue, { Level } from "qrcode.vue";
 
 const text = ref("https://dttk.discretetom.com/qrcode");
 const size = ref(300);
-const level = ref<Level>("H");
 const margin = ref(2);
 const marginStep = ref(1);
 const minMargin = ref(0);
 const maxMargin = ref(10);
 const background = ref("#ffffff");
 const foreground = ref("#000000");
+
+type LevelNumber = 1 | 2 | 3 | 4;
+const levelNumber = ref<LevelNumber>(4);
+const levelMap = ref<Record<LevelNumber, Level>>({
+  1: "L",
+  2: "M",
+  3: "Q",
+  4: "H",
+});
+const level = computed<Level>(() => levelMap.value[levelNumber.value]);
 </script>
 
 <style scoped>

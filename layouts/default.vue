@@ -6,6 +6,7 @@
       </template>
 
       <v-app-bar-title>DTTK</v-app-bar-title>
+      <v-btn @click="emitter.emit('toast', '123')">Test</v-btn>
 
       <template v-slot:append>
         <v-tooltip text="Toggle Theme" location="bottom">
@@ -39,16 +40,28 @@
         <slot />
       </v-container>
     </v-main>
+
+    <ClientOnly>
+      <div id="toaster">
+        <VSonner
+          position="bottom-right"
+          :duration="500000"
+          :visible-toasts="100"
+        />
+      </div>
+    </ClientOnly>
   </v-layout>
 </template>
 
 <script setup lang="ts">
 import { useTheme } from "vuetify";
-
-const drawer = ref(false);
+// TODO: https://github.com/wobsoriano/vuetify-sonner/pull/4
+import { VSonner, toast } from "vuetify-sonner";
 
 const theme = useTheme();
+const emitter = useEmitter();
 
+const drawer = ref(false);
 const pages = ref([
   {
     to: "/qrcode",
@@ -60,4 +73,21 @@ const pages = ref([
 function toggleTheme() {
   theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
 }
+
+onMounted(() => {
+  emitter.on("toast", (message: string) =>
+    toast(message, {
+      action: {
+        // TODO: https://github.com/wobsoriano/vuetify-sonner/pull/4
+        label: "123",
+        // TODO: https://github.com/wobsoriano/vuetify-sonner/pull/4
+        onClick: () => {},
+        buttonProps: {
+          icon: "mdi-close",
+          size: "small",
+        },
+      },
+    })
+  );
+});
 </script>

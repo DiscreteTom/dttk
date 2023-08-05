@@ -47,6 +47,12 @@
     <!-- right drawer -->
     <v-navigation-drawer v-model="showSettings" temporary location="right">
       <v-card-text>
+        <v-text-field
+          label="Toast duration (ms)"
+          variant="solo"
+          type="number"
+          v-model="toastDuration"
+        ></v-text-field>
         <v-checkbox
           label="Invert toast color"
           v-model="invertToastColor"
@@ -63,7 +69,7 @@
     <!-- toaster -->
     <ClientOnly>
       <div :class="invertToastColor ? '' : 'normal-toast'">
-        <VSonner position="bottom-right" :duration="5000" />
+        <VSonner position="bottom-right" :duration="toastDuration" />
       </div>
     </ClientOnly>
   </v-layout>
@@ -80,6 +86,7 @@ const emitter = useEmitter();
 const drawer = ref(false);
 const showSettings = ref(false);
 const invertToastColor = ref(false);
+const toastDuration = ref(5000);
 const pages = ref([
   {
     to: "/qrcode",

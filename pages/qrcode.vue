@@ -1,11 +1,10 @@
 <template>
   <div class="mx-3">
-    <div class="d-flex justify-center align-center flex-wrap">
+    <div class="d-flex flex-wrap justify-center flex-wrap">
       <v-textarea
         v-model="text"
         label="QR Code Content"
         variant="solo"
-        hide-details
         clearable
         clear-icon="mdi-close-circle"
         counter

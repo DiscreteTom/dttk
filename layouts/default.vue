@@ -98,6 +98,11 @@ const pages = ref([
     icon: "mdi-qrcode",
     text: "QR Code Generator",
   },
+  {
+    to: "/uuid",
+    icon: "mdi-identifier",
+    text: "UUID Generator",
+  },
 ]);
 
 onMounted(() => {

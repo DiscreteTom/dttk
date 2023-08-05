@@ -44,7 +44,7 @@
       <div id="toaster">
         <VSonner
           position="bottom-right"
-          :duration="500000"
+          :duration="5000"
           :visible-toasts="100"
         />
       </div>

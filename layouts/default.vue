@@ -8,12 +8,36 @@
       <v-app-bar-title>DTTK🛠️</v-app-bar-title>
 
       <template v-slot:append>
+        <v-tooltip text="Home" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon="mdi-home" to="/" exact></v-btn>
+          </template>
+        </v-tooltip>
+        <v-tooltip text="View Source Code" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              icon="mdi-github"
+              href="https://github.com/DiscreteTom/dttk"
+            ></v-btn>
+          </template>
+        </v-tooltip>
         <v-tooltip text="Toggle Theme" location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
               icon="mdi-theme-light-dark"
               @click="themeManager.toggle"
+            ></v-btn>
+          </template>
+        </v-tooltip>
+        <v-tooltip text="Copy URL" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              icon="mdi-share-variant"
+              v-clipboard:copy="getURL()"
+              v-clipboard:success="() => emitter.emit('toast', 'Copied')"
             ></v-btn>
           </template>
         </v-tooltip>
@@ -104,6 +128,10 @@ const pages = ref([
     text: "UUID Generator",
   },
 ]);
+
+function getURL() {
+  return window.location.href;
+}
 
 onMounted(() => {
   // apply theme

@@ -77,16 +77,19 @@
           type="number"
           :model-value="settings.current.toastDuration"
           @input="settings.current.toastDuration = $event.target.valueAsNumber"
+          hide-details
         ></v-text-field>
         <v-checkbox
           label="Invert toast color"
           v-model="settings.current.invertToastColor"
+          hide-details
         ></v-checkbox>
         <v-checkbox
           label="Follow system theme"
           v-model="followSystemTheme"
+          hide-details
         ></v-checkbox>
-        <v-btn @click="settings.reset">Reset</v-btn>
+        <v-btn @click="settings.reset" hide-details>Reset</v-btn>
       </v-card-text>
     </v-navigation-drawer>
 

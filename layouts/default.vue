@@ -18,6 +18,7 @@
             <v-btn
               v-bind="props"
               icon="mdi-github"
+              class="hidden-sm-and-down"
               href="https://github.com/DiscreteTom/dttk"
             ></v-btn>
           </template>
@@ -27,6 +28,7 @@
             <v-btn
               v-bind="props"
               icon="mdi-theme-light-dark"
+              class="hidden-sm-and-down"
               @click="themeManager.toggle"
             ></v-btn>
           </template>

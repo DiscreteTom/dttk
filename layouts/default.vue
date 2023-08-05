@@ -51,7 +51,8 @@
           label="Toast duration (ms)"
           variant="solo"
           type="number"
-          v-model="settings.current.toastDuration"
+          :model-value="settings.current.toastDuration"
+          @input="settings.current.toastDuration = $event.target.valueAsNumber"
         ></v-text-field>
         <v-checkbox
           label="Invert toast color"

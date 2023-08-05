@@ -51,16 +51,17 @@
           label="Toast duration (ms)"
           variant="solo"
           type="number"
-          v-model="toastDuration"
+          v-model="settings.current.toastDuration"
         ></v-text-field>
         <v-checkbox
           label="Invert toast color"
-          v-model="invertToastColor"
+          v-model="settings.current.invertToastColor"
         ></v-checkbox>
         <v-checkbox
           label="Follow system theme"
           v-model="followSystemTheme"
         ></v-checkbox>
+        <v-btn @click="settings.reset">Reset</v-btn>
       </v-card-text>
     </v-navigation-drawer>
 
@@ -72,8 +73,11 @@
 
     <!-- toaster -->
     <ClientOnly>
-      <div :class="invertToastColor ? '' : 'normal-toast'">
-        <VSonner position="bottom-right" :duration="toastDuration" />
+      <div :class="settings.current.invertToastColor ? '' : 'normal-toast'">
+        <VSonner
+          position="bottom-right"
+          :duration="settings.current.toastDuration"
+        />
       </div>
     </ClientOnly>
   </v-layout>
@@ -89,8 +93,6 @@ const { followSystemTheme, ...themeManager } = useThemeManager();
 
 const drawer = ref(false);
 const showSettings = ref(false);
-const invertToastColor = ref(false);
-const toastDuration = ref(5000);
 const pages = ref([
   {
     to: "/qrcode",
@@ -102,8 +104,6 @@ const pages = ref([
 onMounted(() => {
   // load settings
   settings.load();
-  invertToastColor.value = settings.current.invertToastColor;
-  toastDuration.value = settings.current.toastDuration;
 
   // apply theme
   themeManager.init();

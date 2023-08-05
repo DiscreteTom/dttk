@@ -1,7 +1,5 @@
 import { useTheme } from "vuetify";
 
-const settings = useSettings();
-
 function getSystemTheme() {
   return window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -11,16 +9,17 @@ function getSystemTheme() {
 
 export const useThemeManager = () => {
   const theme = useTheme();
+  const settings = useSettings();
+
   const followSystemTheme = ref(true);
 
-  function set(target: "light" | "dark" | "system", save = true) {
+  function set(target: "light" | "dark" | "system") {
     // update state
     theme.global.name.value = target == "system" ? getSystemTheme() : target;
     followSystemTheme.value = target == "system";
 
     // update settings
     settings.current.theme = target;
-    if (save) settings.save();
   }
 
   function toggle() {
@@ -29,7 +28,7 @@ export const useThemeManager = () => {
 
   function init() {
     // apply settings
-    set(settings.current.theme, false);
+    set(settings.current.theme);
 
     // listen to system theme changes
     window
@@ -40,6 +39,10 @@ export const useThemeManager = () => {
   watch(followSystemTheme, (value) => {
     if (value) set("system");
     else set(theme.global.name.value == "dark" ? "dark" : "light");
+  });
+
+  watch(settings.current, (value) => {
+    set(value.theme);
   });
 
   return {

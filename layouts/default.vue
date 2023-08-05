@@ -13,7 +13,11 @@
             <v-btn v-bind="props" icon="mdi-home" to="/" exact></v-btn>
           </template>
         </v-tooltip>
-        <v-tooltip text="Install PWA" location="bottom">
+        <v-tooltip
+          v-if="!$pwa.isInstalled"
+          text="Install PWA"
+          location="bottom"
+        >
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
@@ -125,6 +129,7 @@
           class="my-2"
           prepend-icon="mdi-download"
           @click="$pwa.install()"
+          v-if="!$pwa.isInstalled"
         >
           Install PWA
         </v-btn>

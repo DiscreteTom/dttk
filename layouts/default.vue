@@ -42,11 +42,7 @@
 
     <ClientOnly>
       <div id="toaster">
-        <VSonner
-          position="bottom-right"
-          :duration="5000"
-          :visible-toasts="100"
-        />
+        <VSonner position="bottom-right" :duration="5000" />
       </div>
     </ClientOnly>
   </v-layout>

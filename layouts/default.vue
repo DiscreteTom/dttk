@@ -73,14 +73,12 @@
     </v-main>
 
     <!-- toaster -->
-    <ClientOnly>
-      <div :class="settings.current.invertToastColor ? '' : 'normal-toast'">
-        <VSonner
-          position="bottom-right"
-          :duration="settings.current.toastDuration"
-        />
-      </div>
-    </ClientOnly>
+    <div :class="settings.current.invertToastColor ? '' : 'normal-toast'">
+      <VSonner
+        position="bottom-right"
+        :duration="settings.current.toastDuration"
+      />
+    </div>
   </v-layout>
 </template>
 
@@ -103,9 +101,6 @@ const pages = ref([
 ]);
 
 onMounted(() => {
-  // load settings
-  settings.load();
-
   // apply theme
   themeManager.init();
 

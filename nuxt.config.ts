@@ -17,7 +17,6 @@ export default defineNuxtConfig({
     },
   },
   app: {
-    baseURL: "/dttk/",
     cdnURL: "https://dttk.discretetom.com/",
   },
   modules: ["@vite-pwa/nuxt"],

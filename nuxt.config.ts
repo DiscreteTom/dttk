@@ -21,5 +21,43 @@ export default defineNuxtConfig({
     cdnURL: "https://dttk.discretetom.com/",
   },
   modules: ["@vite-pwa/nuxt"],
-  pwa: {},
+  pwa: {
+    registerType: "prompt",
+    manifest: {
+      name: "DTTK",
+      short_name: "DTTK",
+      theme_color: "#ffffff",
+      icons: [
+        {
+          src: "pwa-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "pwa-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+        {
+          src: "pwa-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any maskable",
+        },
+      ],
+    },
+    workbox: {
+      navigateFallback: "/",
+      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+    },
+    client: {
+      installPrompt: true,
+    },
+    devOptions: {
+      enabled: true,
+      suppressWarnings: true,
+      navigateFallbackAllowlist: [/^\/$/],
+      type: "module",
+    },
+  },
 });

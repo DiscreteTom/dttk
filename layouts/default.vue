@@ -46,6 +46,12 @@
 
     <!-- right drawer -->
     <v-navigation-drawer v-model="showSettings" temporary location="right">
+      <v-card-text>
+        <v-checkbox
+          label="Invert toast color"
+          v-model="invertToastColor"
+        ></v-checkbox>
+      </v-card-text>
     </v-navigation-drawer>
 
     <v-main>
@@ -56,7 +62,7 @@
 
     <!-- toaster -->
     <ClientOnly>
-      <div id="toaster">
+      <div :class="invertToastColor ? '' : 'normal-toast'">
         <VSonner position="bottom-right" :duration="5000" />
       </div>
     </ClientOnly>
@@ -73,6 +79,7 @@ const emitter = useEmitter();
 
 const drawer = ref(false);
 const showSettings = ref(false);
+const invertToastColor = ref(false);
 const pages = ref([
   {
     to: "/qrcode",
@@ -102,3 +109,13 @@ onMounted(() => {
   );
 });
 </script>
+
+<style scoped>
+.normal-toast :deep(.card-snackbar) {
+  background: rgb(var(--v-theme-surface)) !important;
+  color: rgba(
+    var(--v-theme-on-surface),
+    var(--v-high-emphasis-opacity)
+  ) !important;
+}
+</style>

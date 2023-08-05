@@ -5,7 +5,7 @@
         <v-app-bar-nav-icon @click="drawer = !drawer" />
       </template>
 
-      <v-app-bar-title>DTTK</v-app-bar-title>
+      <v-app-bar-title>DTTK🛠️</v-app-bar-title>
 
       <template v-slot:append>
         <v-tooltip text="Toggle Theme" location="bottom">

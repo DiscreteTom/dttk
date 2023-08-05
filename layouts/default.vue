@@ -6,7 +6,6 @@
       </template>
 
       <v-app-bar-title>DTTK</v-app-bar-title>
-      <v-btn @click="emitter.emit('toast', '123')">Test</v-btn>
 
       <template v-slot:append>
         <v-tooltip text="Toggle Theme" location="bottom">

@@ -13,6 +13,16 @@
             <v-btn v-bind="props" icon="mdi-home" to="/" exact></v-btn>
           </template>
         </v-tooltip>
+        <v-tooltip text="Install PWA" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              icon="mdi-download"
+              class="hidden-sm-and-down"
+              @click="$pwa.install()"
+            ></v-btn>
+          </template>
+        </v-tooltip>
         <v-tooltip text="View Source Code" location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -109,9 +119,15 @@
         >
           Reset
         </v-btn>
-
-        <v-spacer></v-spacer>
-
+        <v-btn
+          hide-details
+          block
+          class="my-2"
+          prepend-icon="mdi-download"
+          @click="$pwa.install()"
+        >
+          Install PWA
+        </v-btn>
         <v-btn
           hide-details
           block

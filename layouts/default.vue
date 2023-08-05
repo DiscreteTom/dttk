@@ -17,9 +17,19 @@
             ></v-btn>
           </template>
         </v-tooltip>
+        <v-tooltip text="Settings" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              icon="mdi-cog-outline"
+              @click="showSettings = !showSettings"
+            ></v-btn>
+          </template>
+        </v-tooltip>
       </template>
     </v-app-bar>
 
+    <!-- left drawer -->
     <v-navigation-drawer v-model="drawer">
       <v-list>
         <v-list-item
@@ -34,12 +44,17 @@
       </v-list>
     </v-navigation-drawer>
 
+    <!-- right drawer -->
+    <v-navigation-drawer v-model="showSettings" temporary location="right">
+    </v-navigation-drawer>
+
     <v-main>
       <v-container fluid>
         <slot />
       </v-container>
     </v-main>
 
+    <!-- toaster -->
     <ClientOnly>
       <div id="toaster">
         <VSonner position="bottom-right" :duration="5000" />
@@ -57,6 +72,7 @@ const theme = useTheme();
 const emitter = useEmitter();
 
 const drawer = ref(false);
+const showSettings = ref(false);
 const pages = ref([
   {
     to: "/qrcode",

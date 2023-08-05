@@ -17,11 +17,10 @@
         class="mx-3"
         :style="`height: ${size + 2}px`"
       >
-        <!-- TODO: https://github.com/scopewu/qrcode.vue/issues/65 -->
         <qrcode-vue
           :value="text"
           :size="size"
-          :level="(level as any)"
+          :level="level"
           :margin="margin"
           :background="background"
           :foreground="foreground"
@@ -92,11 +91,11 @@
 </template>
 
 <script setup lang="ts">
-import QrcodeVue from "qrcode.vue";
+import QrcodeVue, { Level } from "qrcode.vue";
 
 const text = ref("https://dttk.discretetom.com/qrcode");
 const size = ref(300);
-const level = ref("H");
+const level = ref<Level>("H");
 const margin = ref(2);
 const marginStep = ref(1);
 const minMargin = ref(0);

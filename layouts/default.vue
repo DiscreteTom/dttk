@@ -127,11 +127,25 @@
           hide-details
           block
           class="my-2"
-          prepend-icon="mdi-download"
-          @click="$pwa.install()"
-          v-if="!$pwa.isInstalled"
+          :prepend-icon="
+            $pwa.isInstalled
+              ? $pwa.needRefresh
+                ? 'mdi-refresh'
+                : 'mdi-check'
+              : 'mdi-download'
+          "
+          :disabled="$pwa.isInstalled && !$pwa.needRefresh"
+          @click="
+            $pwa.isInstalled ? $pwa.updateServiceWorker(true) : $pwa.install()
+          "
+          :text="
+            $pwa.isInstalled
+              ? $pwa.needRefresh
+                ? 'Refresh to Update'
+                : 'PWA Installed'
+              : 'Install PWA'
+          "
         >
-          Install PWA
         </v-btn>
         <v-btn
           hide-details
@@ -165,6 +179,7 @@
 // TODO: https://github.com/wobsoriano/vuetify-sonner/pull/4
 import { VSonner, toast } from "vuetify-sonner";
 
+const nuxt = useNuxtApp();
 const emitter = useEmitter();
 const settings = useSettings();
 const { followSystemTheme, ...themeManager } = useThemeManager();
@@ -189,9 +204,7 @@ function getURL() {
 }
 
 onMounted(() => {
-  // apply theme
-  themeManager.init();
-
+  // register toast event
   emitter.on("toast", (message: string) =>
     toast(message, {
       action: {
@@ -206,6 +219,14 @@ onMounted(() => {
       },
     })
   );
+
+  // apply theme
+  themeManager.init();
+
+  // check pwa update
+  if (nuxt.$pwa.needRefresh) {
+    emitter.emit("toast", "New content available, please refresh the page.");
+  }
 });
 </script>
 

@@ -214,6 +214,12 @@
 <script setup lang="ts">
 import * as uuid from "uuid";
 
+useDttkMeta({
+  title: "UUID Generator",
+  description: "Free online UUID generator. Support UUID v1, v3, v4, v5.",
+  path: "/uuid",
+});
+
 const emitter = useEmitter();
 
 const nil = ref(uuid.NIL);

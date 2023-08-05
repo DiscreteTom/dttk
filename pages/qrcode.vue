@@ -121,6 +121,12 @@
 <script setup lang="ts">
 import QrcodeVue, { Level } from "qrcode.vue";
 
+useDttkMeta({
+  title: "QR Code Generator",
+  description: "Free and simple online QR Code generator.",
+  path: "/qrcode",
+});
+
 const text = ref("https://dttk.discretetom.com/qrcode");
 const size = ref(300);
 const margin = ref(2);

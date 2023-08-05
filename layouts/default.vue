@@ -89,7 +89,36 @@
           v-model="followSystemTheme"
           hide-details
         ></v-checkbox>
-        <v-btn @click="settings.reset" hide-details>Reset</v-btn>
+        <v-btn
+          @click="themeManager.toggle"
+          hide-details
+          block
+          class="my-2"
+          prepend-icon="mdi-theme-light-dark"
+        >
+          Toggle Theme
+        </v-btn>
+        <v-btn
+          @click="settings.reset"
+          hide-details
+          block
+          class="my-2"
+          prepend-icon="mdi-restore"
+        >
+          Reset
+        </v-btn>
+
+        <v-spacer></v-spacer>
+
+        <v-btn
+          hide-details
+          block
+          class="my-2"
+          prepend-icon="mdi-github"
+          href="https://github.com/DiscreteTom/dttk"
+        >
+          View Source Code
+        </v-btn>
       </v-card-text>
     </v-navigation-drawer>
 

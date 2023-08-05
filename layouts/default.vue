@@ -6,7 +6,6 @@
       </template>
 
       <v-app-bar-title>DTTK</v-app-bar-title>
-      <v-btn @click="emitter.emit('toast', '123')">123</v-btn>
 
       <template v-slot:append>
         <v-tooltip text="Toggle Theme" location="bottom">
@@ -14,7 +13,7 @@
             <v-btn
               v-bind="props"
               icon="mdi-theme-light-dark"
-              @click="toggleTheme"
+              @click="themeManager.toggle"
             ></v-btn>
           </template>
         </v-tooltip>
@@ -58,6 +57,10 @@
           label="Invert toast color"
           v-model="invertToastColor"
         ></v-checkbox>
+        <v-checkbox
+          label="Follow system theme"
+          v-model="followSystemTheme"
+        ></v-checkbox>
       </v-card-text>
     </v-navigation-drawer>
 
@@ -77,13 +80,12 @@
 </template>
 
 <script setup lang="ts">
-import { useTheme } from "vuetify";
 // TODO: https://github.com/wobsoriano/vuetify-sonner/pull/4
 import { VSonner, toast } from "vuetify-sonner";
 
-const theme = useTheme();
 const emitter = useEmitter();
 const settings = useSettings();
+const { followSystemTheme, ...themeManager } = useThemeManager();
 
 const drawer = ref(false);
 const showSettings = ref(false);
@@ -97,32 +99,14 @@ const pages = ref([
   },
 ]);
 
-function toggleTheme() {
-  theme.global.name.value = theme.global.current.value.dark ? "light" : "dark";
-}
-
-function getSystemTheme() {
-  return window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
-
 onMounted(() => {
   // load settings
   settings.load();
   invertToastColor.value = settings.current.invertToastColor;
   toastDuration.value = settings.current.toastDuration;
-  theme.global.name.value =
-    settings.current.theme == "system"
-      ? getSystemTheme()
-      : settings.current.theme;
 
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", (event) => {
-      theme.global.name.value = event.matches ? "dark" : "light";
-    });
+  // apply theme
+  themeManager.init();
 
   emitter.on("toast", (message: string) =>
     toast(message, {

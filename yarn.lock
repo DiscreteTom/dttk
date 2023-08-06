@@ -7376,10 +7376,10 @@ vue@^3.3.4:
     "@vue/server-renderer" "3.3.4"
     "@vue/shared" "3.3.4"
 
-vuetify-sonner@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.npmmirror.com/vuetify-sonner/-/vuetify-sonner-0.3.0.tgz#01379ff9f275959284c90d98a635dac33951f07e"
-  integrity sha512-47clipBicBwOeVfsuWSA66ysn2pCZL2Ly7tXLfvlOm6PBCSZ0fYksQbuO0F6u1PflC0N3OomV2uZJVbOfaJCRQ==
+vuetify-sonner@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.npmmirror.com/vuetify-sonner/-/vuetify-sonner-0.3.2.tgz#88593e48203db947ed8d67b7371c37b100295d5c"
+  integrity sha512-eu/1Ng0ImG0C8recXXOYviKMjmfk21Ff/JvhZyDpZABPAmHh+60ppUWpTVDHyffk+qjlCt/lwVIaxgKx6YXHnA==
   dependencies:
     vue-sonner "^0.4.2"
 

@@ -187,6 +187,11 @@ const drawer = ref(false);
 const showSettings = ref(false);
 const pages = ref([
   {
+    to: "/number",
+    icon: "mdi-hexadecimal",
+    text: "Number Convertor",
+  },
+  {
     to: "/qrcode",
     icon: "mdi-qrcode",
     text: "QR Code Generator",

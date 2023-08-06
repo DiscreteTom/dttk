@@ -7360,10 +7360,10 @@ vue-router@^4.2.4:
   dependencies:
     "@vue/devtools-api" "^6.5.0"
 
-vue-sonner@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.npmmirror.com/vue-sonner/-/vue-sonner-0.3.3.tgz#10d68b4a60ac41ae5c4d8f7bece33fe51d70d9e9"
-  integrity sha512-lcLvlHJIRzVN1rV92yfvHYajeysbG1zGDQVzvnI+yFcbWW7QyinVoJTs79dnk8TrhPzuKUdWeoEMUBSOallEBg==
+vue-sonner@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.npmmirror.com/vue-sonner/-/vue-sonner-0.4.2.tgz#348308e753f8192081b1f31ce96864179e19c829"
+  integrity sha512-8+Xv36Aqemzc7PoDto9T2/euBNETYfgCN1yqefGzV2PmIxjssjo2qS5Qjtmhdn9XtoDWL5hGjHSc+qx5ze48sA==
 
 vue@^3.3.4:
   version "3.3.4"
@@ -7376,12 +7376,12 @@ vue@^3.3.4:
     "@vue/server-renderer" "3.3.4"
     "@vue/shared" "3.3.4"
 
-vuetify-sonner@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmmirror.com/vuetify-sonner/-/vuetify-sonner-0.2.1.tgz#13c177827e83679238066c6966cf20d3f55620f9"
-  integrity sha512-RQEuRfwLGE5tMByVj+WZK62cCiZ5zfY6ibHVgp1F6FkgmHgyLdHjW5+E6s2+5Wr9WHWiTLvwZ5ggVWgUa+7i+w==
+vuetify-sonner@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.npmmirror.com/vuetify-sonner/-/vuetify-sonner-0.3.0.tgz#01379ff9f275959284c90d98a635dac33951f07e"
+  integrity sha512-47clipBicBwOeVfsuWSA66ysn2pCZL2Ly7tXLfvlOm6PBCSZ0fYksQbuO0F6u1PflC0N3OomV2uZJVbOfaJCRQ==
   dependencies:
-    vue-sonner "^0.3.3"
+    vue-sonner "^0.4.2"
 
 vuetify@^3.3.11:
   version "3.3.11"

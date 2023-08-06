@@ -176,7 +176,6 @@
 </template>
 
 <script setup lang="ts">
-// TODO: https://github.com/wobsoriano/vuetify-sonner/pull/4
 import { VSonner, toast } from "vuetify-sonner";
 
 const nuxt = useNuxtApp();
@@ -208,10 +207,6 @@ onMounted(() => {
   emitter.on("toast", (message: string) =>
     toast(message, {
       action: {
-        // TODO: https://github.com/wobsoriano/vuetify-sonner/pull/4
-        label: "123",
-        // TODO: https://github.com/wobsoriano/vuetify-sonner/pull/4
-        onClick: () => {},
         buttonProps: {
           icon: "mdi-close",
           size: "small",

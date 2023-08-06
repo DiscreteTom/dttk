@@ -23,6 +23,6 @@
     "sass": "^1.64.2",
     "uuid": "^9.0.0",
     "vuetify": "^3.3.11",
-    "vuetify-sonner": "^0.2.1"
+    "vuetify-sonner": "^0.3.0"
   }
 }

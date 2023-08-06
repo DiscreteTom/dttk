@@ -209,7 +209,7 @@ function getURL() {
 
 onMounted(() => {
   // register toast event
-  emitter.on("toast", (message: string) =>
+  emitter.on("toast", (message: string) => {
     toast(message, {
       action: {
         buttonProps: {
@@ -217,8 +217,8 @@ onMounted(() => {
           size: "small",
         },
       },
-    })
-  );
+    });
+  });
 
   // apply theme
   themeManager.init();

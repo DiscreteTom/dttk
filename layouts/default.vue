@@ -224,7 +224,7 @@ onMounted(() => {
   themeManager.init();
 
   // check pwa update
-  if (nuxt.$pwa.needRefresh) {
+  if (nuxt.$pwa.isInstalled && nuxt.$pwa.needRefresh) {
     emitter.emit("toast", "New content available, please refresh the page.");
   }
 });

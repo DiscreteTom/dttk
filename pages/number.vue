@@ -4,7 +4,7 @@
     <div class="mx-2">
       <div class="d-flex mb-3">
         <v-row no-gutters>
-          <v-col>
+          <v-col :cols="display.smAndDown.value ? 12 : 4">
             <v-select
               label="From"
               :items="Object.keys(result)"
@@ -12,9 +12,10 @@
               density="compact"
               hide-details
               v-model="fromFormat"
+              :class="display.smAndDown.value ? 'mb-3' : 'mr-3'"
             />
           </v-col>
-          <v-col>
+          <v-col :cols="display.smAndDown.value ? 12 : 8">
             <v-text-field
               label="Value"
               v-model="fromValue"
@@ -115,6 +116,8 @@
 </template>
 
 <script setup lang="ts">
+import { useDisplay } from "vuetify";
+
 useDttkMeta({
   title: "Number Convertor",
   description:
@@ -123,6 +126,7 @@ useDttkMeta({
 });
 
 const emitter = useEmitter();
+const display = useDisplay();
 
 const result = reactive({
   "Binary (Base 2)": "",

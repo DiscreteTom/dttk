@@ -103,7 +103,6 @@
       <v-card
         class="mx-2 my-2 flex-grow-1 d-flex align-center justify-center"
         style="min-height: 100px"
-        hover
         @click="
           custom.push({ base: 2, txt: '' });
           calculate();

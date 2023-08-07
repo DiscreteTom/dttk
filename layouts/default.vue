@@ -216,7 +216,7 @@ const pages = ref([
 ]);
 
 function getURL() {
-  return window.location.href;
+  return process.client ? window.location.href : "";
 }
 
 onMounted(() => {

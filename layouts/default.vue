@@ -192,6 +192,11 @@ const pages = ref([
     text: "Time Calculator",
   },
   {
+    to: "/codec",
+    icon: "mdi-message-text-lock-outline",
+    text: "Text Codec",
+  },
+  {
     to: "/number",
     icon: "mdi-hexadecimal",
     text: "Number Convertor",

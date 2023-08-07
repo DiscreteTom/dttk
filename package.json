@@ -10,7 +10,9 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@types/js-md5": "^0.7.0",
     "@types/node": "^18.17.1",
+    "@types/pako": "^2.0.0",
     "@types/uuid": "^9.0.2",
     "@vite-pwa/nuxt": "^0.1.0",
     "nuxt": "^3.6.5"
@@ -18,7 +20,11 @@
   "dependencies": {
     "@mdi/font": "^7.2.96",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
+    "buffer": "^6.0.3",
+    "js-base64": "^3.7.5",
+    "js-md5": "^0.7.3",
     "mitt": "^3.0.1",
+    "pako": "^2.1.0",
     "qrcode.vue": "^3.4.1",
     "sass": "^1.64.2",
     "uuid": "^9.0.0",

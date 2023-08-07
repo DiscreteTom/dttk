@@ -167,10 +167,12 @@
 
     <!-- toaster -->
     <div :class="settings.current.invertToastColor ? '' : 'normal-toast'">
-      <VSonner
-        position="bottom-right"
-        :duration="settings.current.toastDuration"
-      />
+      <ClientOnly>
+        <VSonner
+          position="bottom-right"
+          :duration="settings.current.toastDuration"
+        />
+      </ClientOnly>
     </div>
   </v-layout>
 </template>

@@ -9,6 +9,9 @@ const current = reactive({ ...defaultSettings });
 let loaded = false;
 
 function load() {
+  if (loaded) return current;
+  loaded = true;
+
   const str = localStorage.getItem("settings");
   console.log(`Settings loaded: ${str}`);
   if (str !== null) {
@@ -16,6 +19,8 @@ function load() {
     Object.assign(current, obj);
   }
   console.log(`Settings applied: ${JSON.stringify(current)}`);
+
+  watch(current, save);
   return current;
 }
 
@@ -31,12 +36,6 @@ function reset() {
 }
 
 export const useSettings = () => {
-  if (!loaded) {
-    load();
-    loaded = true;
-    watch(current, save);
-  }
-
   return {
     current,
     load,

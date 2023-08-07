@@ -218,6 +218,8 @@ function getURL() {
 }
 
 onMounted(() => {
+  settings.load();
+
   // register toast event
   emitter.on("toast", (message: string) => {
     toast(message, {

@@ -14,7 +14,7 @@
           </template>
         </v-tooltip>
         <v-tooltip
-          v-if="!$pwa.isInstalled"
+          v-if="!pwa?.isInstalled"
           text="Install PWA"
           location="bottom"
         >
@@ -23,7 +23,7 @@
               v-bind="props"
               icon="mdi-download"
               class="hidden-sm-and-down"
-              @click="$pwa.install()"
+              @click="pwa?.install()"
             ></v-btn>
           </template>
         </v-tooltip>
@@ -128,19 +128,19 @@
           block
           class="my-2"
           :prepend-icon="
-            $pwa.isInstalled
-              ? $pwa.needRefresh
+            pwa?.isInstalled
+              ? pwa?.needRefresh
                 ? 'mdi-refresh'
                 : 'mdi-check'
               : 'mdi-download'
           "
-          :disabled="$pwa.isInstalled && !$pwa.needRefresh"
+          :disabled="pwa?.isInstalled && !pwa?.needRefresh"
           @click="
-            $pwa.isInstalled ? $pwa.updateServiceWorker(true) : $pwa.install()
+            pwa?.isInstalled ? pwa?.updateServiceWorker(true) : pwa?.install()
           "
           :text="
-            $pwa.isInstalled
-              ? $pwa.needRefresh
+            pwa?.isInstalled
+              ? pwa?.needRefresh
                 ? 'Refresh to Update'
                 : 'PWA Installed'
               : 'Install PWA'
@@ -176,6 +176,7 @@
 </template>
 
 <script setup lang="ts">
+import { NuxtApp } from "nuxt/app";
 import { VSonner, toast } from "vuetify-sonner";
 
 const nuxt = useNuxtApp();
@@ -185,6 +186,7 @@ const { followSystemTheme, ...themeManager } = useThemeManager();
 
 const drawer = ref(false);
 const showSettings = ref(false);
+const pwa = ref<NuxtApp["$pwa"] | null>(null);
 const pages = ref([
   {
     to: "/time",
@@ -236,7 +238,8 @@ onMounted(() => {
   themeManager.init();
 
   // check pwa update
-  if (nuxt.$pwa.isInstalled && nuxt.$pwa.needRefresh) {
+  pwa.value = nuxt.$pwa;
+  if (pwa.value.isInstalled && pwa.value.needRefresh) {
     emitter.emit("toast", "New content available, please refresh the page.");
   }
 });

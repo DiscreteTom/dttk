@@ -36,7 +36,7 @@
         :key="name"
         class="mx-2 my-2 flex-grow-1"
       >
-        <v-card-title>
+        <v-card-title class="d-flex align-center">
           {{ name }}
           <v-tooltip text="Copy" location="top">
             <template v-slot:activator="{ props }">
@@ -61,7 +61,7 @@
         :key="i"
         class="mx-2 my-2 flex-grow-1"
       >
-        <v-card-title class="d-flex">
+        <v-card-title class="d-flex align-center">
           <v-text-field
             v-model="item.base"
             label="Base (2-36)"

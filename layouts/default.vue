@@ -187,6 +187,11 @@ const drawer = ref(false);
 const showSettings = ref(false);
 const pages = ref([
   {
+    to: "/time",
+    icon: "mdi-clock-outline",
+    text: "Time Calculator",
+  },
+  {
     to: "/number",
     icon: "mdi-hexadecimal",
     text: "Number Convertor",

@@ -138,7 +138,7 @@
         </v-card-text>
       </v-card>
       <v-card
-        class="mx-2 my-2 flex-grow-1 d-flex align-center justify-center"
+        class="mx-2 mb-2 flex-grow-1 d-flex align-center justify-center"
         style="min-height: 100px"
         @click="
           custom.push({ tz: timezones[0], txt: '' });

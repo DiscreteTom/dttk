@@ -87,9 +87,11 @@
             </template>
           </v-tooltip>
         </v-card-title>
-        <v-card-text>
-          {{ value }}
-        </v-card-text>
+        <client-only>
+          <v-card-text>
+            {{ value }}
+          </v-card-text>
+        </client-only>
       </v-card>
 
       <v-card
@@ -98,15 +100,6 @@
         class="mx-2 my-2 flex-grow-1"
       >
         <v-card-title class="d-flex align-center">
-          <v-combobox
-            v-model="item.tz"
-            :items="timezones"
-            label="Timezone"
-            variant="outlined"
-            density="compact"
-            hide-details
-            class="mr-3"
-          />
           <v-combobox
             v-model="item.tz"
             :items="timezones"
@@ -553,6 +546,7 @@ function update(date = new Date()) {
 }
 
 function applyTimer() {
+  clearTimer();
   timerHandle.value = window.setInterval(() => update(), intervalMs.value);
   update();
 }

@@ -13,20 +13,22 @@
             <v-btn v-bind="props" icon="mdi-home" to="/" exact></v-btn>
           </template>
         </v-tooltip>
-        <v-tooltip
-          v-if="!pwa?.isInstalled"
-          text="Install PWA"
-          location="bottom"
-        >
-          <template v-slot:activator="{ props }">
-            <v-btn
-              v-bind="props"
-              icon="mdi-download"
-              class="hidden-sm-and-down"
-              @click="pwa?.install()"
-            ></v-btn>
-          </template>
-        </v-tooltip>
+        <ClientOnly>
+          <v-tooltip
+            v-if="!$pwa?.isInstalled"
+            text="Install PWA"
+            location="bottom"
+          >
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                icon="mdi-download"
+                class="hidden-sm-and-down"
+                @click="$pwa?.install()"
+              ></v-btn>
+            </template>
+          </v-tooltip>
+        </ClientOnly>
         <v-tooltip text="View Source Code" location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -123,30 +125,34 @@
         >
           Reset
         </v-btn>
-        <v-btn
-          hide-details
-          block
-          class="my-2"
-          :prepend-icon="
-            pwa?.isInstalled
-              ? pwa?.needRefresh
-                ? 'mdi-refresh'
-                : 'mdi-check'
-              : 'mdi-download'
-          "
-          :disabled="pwa?.isInstalled && !pwa?.needRefresh"
-          @click="
-            pwa?.isInstalled ? pwa?.updateServiceWorker(true) : pwa?.install()
-          "
-          :text="
-            pwa?.isInstalled
-              ? pwa?.needRefresh
-                ? 'Refresh to Update'
-                : 'PWA Installed'
-              : 'Install PWA'
-          "
-        >
-        </v-btn>
+        <ClientOnly>
+          <v-btn
+            hide-details
+            block
+            class="my-2"
+            :prepend-icon="
+              $pwa?.isInstalled
+                ? $pwa?.needRefresh
+                  ? 'mdi-refresh'
+                  : 'mdi-check'
+                : 'mdi-download'
+            "
+            :disabled="$pwa?.isInstalled && !$pwa?.needRefresh"
+            @click="
+              $pwa?.isInstalled
+                ? $pwa?.updateServiceWorker(true)
+                : $pwa?.install()
+            "
+            :text="
+              $pwa?.isInstalled
+                ? $pwa?.needRefresh
+                  ? 'Refresh to Update'
+                  : 'PWA Installed'
+                : 'Install PWA'
+            "
+          >
+          </v-btn>
+        </ClientOnly>
         <v-btn
           hide-details
           block
@@ -178,7 +184,6 @@
 </template>
 
 <script setup lang="ts">
-import { NuxtApp } from "nuxt/app";
 import { VSonner, toast } from "vuetify-sonner";
 
 const nuxt = useNuxtApp();
@@ -188,7 +193,6 @@ const { followSystemTheme, ...themeManager } = useThemeManager();
 
 const drawer = ref(false);
 const showSettings = ref(false);
-const pwa = ref<NuxtApp["$pwa"] | null>(null);
 const pages = ref([
   {
     to: "/time",
@@ -240,8 +244,7 @@ onMounted(() => {
   themeManager.init();
 
   // check pwa update
-  pwa.value = nuxt.$pwa;
-  if (pwa.value.isInstalled && pwa.value.needRefresh) {
+  if (nuxt.$pwa.isInstalled && nuxt.$pwa.needRefresh) {
     emitter.emit("toast", "New content available, please refresh the page.");
   }
 });

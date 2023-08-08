@@ -56,7 +56,7 @@
               variant="outlined"
               density="compact"
               hide-details
-              :class="display.smAndUp.value ? 'mr-3' : 'mb-3 mr-3'"
+              :class="display.smAndUp.value ? '' : 'mb-3'"
               @keydown.enter="calculate"
               @input="calculate"
             />
@@ -87,11 +87,9 @@
             </template>
           </v-tooltip>
         </v-card-title>
-        <client-only>
-          <v-card-text>
-            {{ value }}
-          </v-card-text>
-        </client-only>
+        <v-card-text>
+          {{ value || "Loading" }}
+        </v-card-text>
       </v-card>
 
       <v-card

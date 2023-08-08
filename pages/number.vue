@@ -52,7 +52,7 @@
           </v-tooltip>
         </v-card-title>
         <v-card-text>
-          {{ value }}
+          {{ value || "Loading" }}
         </v-card-text>
       </v-card>
 

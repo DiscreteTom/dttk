@@ -219,6 +219,11 @@ const pages = ref([
     icon: "mdi-identifier",
     text: "UUID Generator",
   },
+  {
+    to: "/random",
+    icon: "mdi-help-circle-outline",
+    text: "Random Generator",
+  },
 ]);
 
 function getURL() {

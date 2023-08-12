@@ -220,6 +220,11 @@ const pages = ref([
     text: "UUID Generator",
   },
   {
+    to: "/ip",
+    icon: "mdi-ip-outline",
+    text: "IP Address Calculator",
+  },
+  {
     to: "/random",
     icon: "mdi-help-circle-outline",
     text: "Random Generator",

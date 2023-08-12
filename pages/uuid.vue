@@ -77,6 +77,7 @@
         <v-text-field
           v-model="v3namespace"
           variant="outlined"
+          clearable
           hide-details
           density="compact"
           class="mb-3"
@@ -87,6 +88,7 @@
         <v-text-field
           v-model="v3name"
           variant="outlined"
+          clearable
           hide-details
           density="compact"
           class="mb-3"
@@ -167,6 +169,7 @@
         <v-text-field
           v-model="v5namespace"
           variant="outlined"
+          clearable
           hide-details
           density="compact"
           class="mb-3"
@@ -177,6 +180,7 @@
         <v-text-field
           v-model="v5name"
           variant="outlined"
+          clearable
           hide-details
           density="compact"
           class="mb-3"

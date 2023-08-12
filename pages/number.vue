@@ -21,6 +21,7 @@
               v-model="fromValue"
               variant="outlined"
               density="compact"
+              clearable
               hide-details
               @input="calculate"
             />

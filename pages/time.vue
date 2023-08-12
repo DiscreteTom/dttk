@@ -55,6 +55,7 @@
               v-model="fromValue"
               variant="outlined"
               density="compact"
+              clearable
               hide-details
               :class="display.smAndUp.value ? '' : 'mb-3'"
               @keydown.enter="calculate"

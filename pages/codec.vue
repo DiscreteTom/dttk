@@ -21,6 +21,7 @@
               v-model="fromValue"
               variant="outlined"
               density="compact"
+              clearable
               hide-details
               :class="display.smAndUp.value ? 'mr-3' : ''"
               @input="calculate"

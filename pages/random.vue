@@ -44,6 +44,12 @@
 </template>
 
 <script setup lang="ts">
+useDttkMeta({
+  title: "Random Number Generator",
+  description: "Generate a random number between two numbers.",
+  path: "/random",
+});
+
 const numberFrom = ref(1);
 const numberTo = ref(10);
 const number = ref(0);

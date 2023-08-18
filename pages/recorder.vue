@@ -123,32 +123,32 @@
 <script setup lang="ts">
 const emitter = useEmitter();
 
+/** If getting devices, ready is false. */
 const ready = ref(true);
 const enableAudio = ref(false);
-const enablePreview = ref(true);
 const videoInputType = ref<"camera" | "screen" | "none">("screen");
+const enablePreview = ref(true);
 const devices = ref<MediaDeviceInfo[]>([]);
 const audioDeviceName = ref("");
 const videoDeviceName = ref("");
 const recording = ref(false);
 const mutePreview = ref(true);
 const audioStream = ref<MediaStream | null>(null);
-const cameraStream = ref<MediaStream | null>(null);
-const screenStream = ref<MediaStream | null>(null);
+const videoStream = ref<MediaStream | null>(null);
 const resultStream = ref<MediaStream | null>(null);
 const recorder = ref<MediaRecorder | null>(null);
-const chunks = ref<Blob[]>([]);
+const chunks = [] as Blob[];
 const preview = ref<HTMLVideoElement | null>(null);
 
 async function selectWindow() {
-  screenStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
-  cameraStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
-  cameraStream.value = null;
+  // disable existing video streams
+  videoStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
+  videoStream.value = null;
   try {
-    screenStream.value = await navigator.mediaDevices.getDisplayMedia();
+    videoStream.value = await navigator.mediaDevices.getDisplayMedia();
   } catch (e) {
     console.log(e);
-    screenStream.value = null;
+    videoStream.value = null;
   }
   updatePreview("video");
 }
@@ -170,17 +170,17 @@ async function startRecording() {
   }
 
   recording.value = true;
-  chunks.value = [];
+  chunks.length = 0; // clear
   recorder.value = new MediaRecorder(resultStream.value, {
     mimeType: "video/webm;codecs=vp9",
   });
   recorder.value.ondataavailable = (e) => {
-    chunks.value.push(e.data);
+    chunks.push(e.data);
   };
   recorder.value.onstop = () => {
     var a = document.createElement("a");
     a.download = "capture.mp4";
-    a.href = URL.createObjectURL(new Blob(chunks.value));
+    a.href = URL.createObjectURL(new Blob(chunks));
     a.click();
   };
   recorder.value.start();
@@ -218,10 +218,9 @@ async function getResultStream(updated: "video" | "audio" | "all") {
   if (["video", "all"].includes(updated)) {
     if (videoInputType.value != "none") {
       if (videoInputType.value == "camera") {
-        cameraStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
-        screenStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
-        screenStream.value = null;
-        cameraStream.value = await navigator.mediaDevices.getUserMedia({
+        videoStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
+        videoStream.value = null;
+        videoStream.value = await navigator.mediaDevices.getUserMedia({
           video: {
             deviceId: {
               exact: devices.value.filter(
@@ -232,21 +231,18 @@ async function getResultStream(updated: "video" | "audio" | "all") {
         });
       } else {
         // screen stream
-        cameraStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
-        cameraStream.value = null;
+        videoStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
+        videoStream.value = null;
       }
     } else {
-      cameraStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
-      screenStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
-      cameraStream.value = null;
-      screenStream.value = null;
+      videoStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
+      videoStream.value = null;
     }
   }
 
   let stream = new MediaStream();
   audioStream.value?.getTracks().map((t) => stream.addTrack(t));
-  cameraStream.value?.getTracks().map((t) => stream.addTrack(t));
-  screenStream.value?.getTracks().map((t) => stream.addTrack(t));
+  videoStream.value?.getTracks().map((t) => stream.addTrack(t));
 
   resultStream.value = stream.getTracks().length == 0 ? null : stream;
 }

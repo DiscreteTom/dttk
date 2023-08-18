@@ -102,15 +102,20 @@
         </v-card-text>
       </v-card>
       <v-card
-        class="mx-2 my-2 flex-grow-1 d-flex align-center justify-center"
+        class="mx-2 my-2 flex-grow-1"
         style="min-height: 100px"
         @click="
           custom.push({ base: 2, txt: '' });
           calculate();
         "
       >
-        <v-icon> mdi-plus </v-icon>
-        <v-card-subtitle> Custom Base </v-card-subtitle>
+        <v-card-text
+          class="d-flex align-center justify-center"
+          style="height: 100%"
+        >
+          <v-icon> mdi-plus </v-icon>
+          <v-card-subtitle> Custom Base </v-card-subtitle>
+        </v-card-text>
       </v-card>
     </div>
   </div>

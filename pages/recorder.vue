@@ -1,14 +1,28 @@
 <template>
   <div class="mx-3">
     <!-- audio input -->
-    <div class="d-flex align-center">
-      <v-switch
-        label="Audio"
+    <div class="d-flex align-center mb-3">
+      <v-btn-toggle
+        mandatory
         v-model="enableAudio"
-        inset
         :disabled="recording"
         @change="updatePreview('audio')"
-      />
+      >
+        <v-btn
+          :value="true"
+          :disabled="enableAudio"
+          prepend-icon="mdi-microphone"
+        >
+          Enable Audio
+        </v-btn>
+        <v-btn
+          :value="false"
+          :disabled="!enableAudio"
+          prepend-icon="mdi-microphone-off"
+        >
+          Disable Audio
+        </v-btn>
+      </v-btn-toggle>
       <v-select
         label="Captured Audio"
         :items="audioDeviceNames"

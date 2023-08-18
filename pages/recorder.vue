@@ -15,7 +15,7 @@
         mandatory
         v-model="enableAudio"
         :disabled="recording"
-        @change="updatePreview('audio')"
+        @update:model-value="updatePreview('audio')"
       >
         <v-btn
           :value="true"
@@ -41,7 +41,7 @@
         hide-details
         :disabled="!enableAudio || recording"
         class="ml-3"
-        @change="updatePreview('audio')"
+        @update:model-value="updatePreview('audio')"
       />
     </div>
 
@@ -51,7 +51,7 @@
         mandatory
         v-model="videoInputType"
         :disabled="recording"
-        @change="updatePreview('video')"
+        @update:model-value="updatePreview('video')"
         class="mr-3"
       >
         <v-btn
@@ -85,7 +85,7 @@
         density="compact"
         hide-details
         :disabled="recording"
-        @change="updatePreview('video')"
+        @update:model-value="updatePreview('video')"
       />
       <v-btn
         v-if="videoInputType == 'screen'"
@@ -113,7 +113,7 @@
         v-model="enablePreview"
         inset
         class="ml-3"
-        @change="updatePreview('all')"
+        @update:model-value="updatePreview('all')"
         :disabled="!ready"
       />
       <v-switch label="Mute Preview" v-model="mutePreview" inset class="ml-3" />
@@ -162,8 +162,8 @@ async function selectWindow() {
   updatePreview("video");
 }
 
-async function updatePreview(updated?: "video" | "audio" | "all") {
-  if (!enablePreview) {
+async function updatePreview(updated: "video" | "audio" | "all") {
+  if (!enablePreview.value) {
     preview.value!.srcObject = null;
     return;
   }
@@ -204,13 +204,13 @@ function stopRecording() {
   recorder.value = null;
 }
 
-async function updateResultStream(updated?: "video" | "audio" | "all") {
+async function updateResultStream(updated: "video" | "audio" | "all") {
   await refreshDeviceList();
 
-  if (updated != undefined && ["audio", "all"].includes(updated)) {
+  if (["audio", "all"].includes(updated)) {
     audioStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
     audioStream.value = null;
-    if (enableAudio) {
+    if (enableAudio.value) {
       audioStream.value = await navigator.mediaDevices.getUserMedia({
         audio: {
           deviceId: {
@@ -223,7 +223,7 @@ async function updateResultStream(updated?: "video" | "audio" | "all") {
     }
   }
 
-  if (updated != undefined && ["video", "all"].includes(updated)) {
+  if (["video", "all"].includes(updated)) {
     // only screen stream can be reused
     // since the screen stream is assigned by selectWindow
     if (videoInputType.value != "screen") {
@@ -290,7 +290,7 @@ async function refreshDeviceList() {
 }
 
 onMounted(() => {
-  updatePreview();
+  updatePreview("all");
 });
 
 const audioDeviceNames = computed(() =>

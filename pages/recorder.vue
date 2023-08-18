@@ -137,8 +137,8 @@ const audioStream = ref<MediaStream | null>(null);
 const videoStream = ref<MediaStream | null>(null);
 const resultStream = ref<MediaStream | null>(null);
 const recorder = ref<MediaRecorder | null>(null);
-const chunks = [] as Blob[];
 const preview = ref<HTMLVideoElement | null>(null);
+const chunks = [] as Blob[];
 
 async function selectWindow() {
   // disable existing video streams
@@ -153,13 +153,13 @@ async function selectWindow() {
   updatePreview("video");
 }
 
-async function updatePreview(updated: "video" | "audio" | "all") {
+async function updatePreview(updated?: "video" | "audio" | "all") {
   if (!enablePreview) {
     preview.value!.srcObject = null;
     return;
   }
 
-  await getResultStream(updated);
+  await updateResultStream(updated);
   preview.value!.srcObject = resultStream.value;
 }
 
@@ -195,11 +195,12 @@ function stopRecording() {
   recorder.value = null;
 }
 
-async function getResultStream(updated: "video" | "audio" | "all") {
+async function updateResultStream(updated?: "video" | "audio" | "all") {
   await refreshDeviceList();
 
-  if (["audio", "all"].includes(updated)) {
+  if (updated != undefined && ["audio", "all"].includes(updated)) {
     audioStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
+    audioStream.value = null;
     if (enableAudio) {
       audioStream.value = await navigator.mediaDevices.getUserMedia({
         audio: {
@@ -210,33 +211,27 @@ async function getResultStream(updated: "video" | "audio" | "all") {
           },
         },
       });
-    } else {
-      audioStream.value = null;
     }
   }
 
-  if (["video", "all"].includes(updated)) {
-    if (videoInputType.value != "none") {
-      if (videoInputType.value == "camera") {
-        videoStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
-        videoStream.value = null;
-        videoStream.value = await navigator.mediaDevices.getUserMedia({
-          video: {
-            deviceId: {
-              exact: devices.value.filter(
-                (d) => d.label == videoDeviceName.value
-              )[0].deviceId,
-            },
-          },
-        });
-      } else {
-        // screen stream
-        videoStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
-        videoStream.value = null;
-      }
-    } else {
+  if (updated != undefined && ["video", "all"].includes(updated)) {
+    // only screen stream can be reused
+    // since the screen stream is assigned by selectWindow
+    if (videoInputType.value != "screen") {
       videoStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
       videoStream.value = null;
+    }
+
+    if (videoInputType.value == "camera") {
+      videoStream.value = await navigator.mediaDevices.getUserMedia({
+        video: {
+          deviceId: {
+            exact: devices.value.filter(
+              (d) => d.label == videoDeviceName.value
+            )[0].deviceId,
+          },
+        },
+      });
     }
   }
 
@@ -248,47 +243,45 @@ async function getResultStream(updated: "video" | "audio" | "all") {
 }
 
 async function refreshDeviceList() {
-  if (
-    enableAudio.value ||
-    (videoInputType.value != "none" && videoInputType.value == "camera")
-  ) {
-    if (devices.value.length == 0 || devices.value.some((d) => d.label == ""))
-      emitter.emit("toast", "Refreshing device list...");
+  if (!ready.value) return;
+  if (!enableAudio.value && videoInputType.value != "camera") return;
 
-    let _devices = await navigator.mediaDevices.enumerateDevices();
-    if (_devices.some((d) => d.label == "")) {
-      // need to retrieve permission
-      try {
-        ready.value = false;
-        (
-          await navigator.mediaDevices.getUserMedia({
-            audio: enableAudio.value,
-            video: videoInputType.value == "camera",
-          })
-        )
-          .getTracks()
-          .map((t) => t.stop()); // stop devices
+  if (devices.value.length == 0 || devices.value.some((d) => d.label == ""))
+    emitter.emit("toast", "Refreshing device list...");
 
-        // enumerate again
-        _devices = await navigator.mediaDevices.enumerateDevices();
-      } catch {
-        emitter.emit("toast", "Failed to get media devices.");
-        enableAudio.value = false;
-        videoInputType.value = "screen";
-        ready.value = true;
-        return;
-      }
+  let _devices = await navigator.mediaDevices.enumerateDevices();
+  if (_devices.some((d) => d.label == "")) {
+    // need to retrieve permission
+    try {
+      ready.value = false;
+      (
+        await navigator.mediaDevices.getUserMedia({
+          audio: enableAudio.value,
+          video: videoInputType.value == "camera",
+        })
+      )
+        .getTracks()
+        .map((t) => t.stop()); // stop devices, just need permission
+
+      // enumerate again
+      _devices = await navigator.mediaDevices.enumerateDevices();
+    } catch {
+      emitter.emit("toast", "Failed to get media devices.");
+      enableAudio.value = false;
+      videoInputType.value = "screen"; // fallback to screen
+      ready.value = true;
+      return;
     }
-
-    devices.value = _devices;
-    audioDeviceName.value ||= audioDeviceNames.value[0] || "";
-    videoDeviceName.value ||= videoDeviceNames.value[0] || "";
-    ready.value = true;
   }
+
+  devices.value = _devices;
+  audioDeviceName.value = audioDeviceNames.value[0] || "";
+  videoDeviceName.value = videoDeviceNames.value[0] || "";
+  ready.value = true;
 }
 
 onMounted(() => {
-  updatePreview("all");
+  updatePreview();
 });
 
 const audioDeviceNames = computed(() =>

@@ -38,23 +38,35 @@
 
     <!-- video input -->
     <div class="d-flex align-center">
-      <v-switch
-        label="Video"
-        v-model="enableVideo"
-        :disabled="recording"
-        inset
-        @change="updatePreview('video')"
-      />
-      <v-radio-group
+      <v-btn-toggle
+        mandatory
         v-model="videoInputType"
-        inline
-        :disabled="!enableVideo || recording"
-        class="ml-3"
+        :disabled="recording"
         @change="updatePreview('video')"
+        class="mr-3"
       >
-        <v-radio label="Camera" value="camera" />
-        <v-radio label="Record Screen" value="screen" />
-      </v-radio-group>
+        <v-btn
+          :value="'screen'"
+          :disabled="videoInputType == 'screen'"
+          prepend-icon="mdi-monitor"
+        >
+          Record Screen
+        </v-btn>
+        <v-btn
+          :value="'camera'"
+          :disabled="videoInputType == 'camera'"
+          prepend-icon="mdi-camera"
+        >
+          Record Camera
+        </v-btn>
+        <v-btn
+          :value="'none'"
+          :disabled="videoInputType == 'none'"
+          prepend-icon="mdi-video-off"
+        >
+          No Video
+        </v-btn>
+      </v-btn-toggle>
       <v-select
         v-if="videoInputType == 'camera'"
         label="Captured Video Device"
@@ -63,12 +75,12 @@
         variant="outlined"
         density="compact"
         hide-details
-        :disabled="!enableVideo || recording"
+        :disabled="recording"
         @change="updatePreview('video')"
       />
       <v-btn
         v-if="videoInputType == 'screen'"
-        :disabled="!enableVideo || recording"
+        :disabled="recording"
         @click="selectWindow"
       >
         SELECT WINDOW
@@ -113,9 +125,8 @@ const emitter = useEmitter();
 
 const ready = ref(true);
 const enableAudio = ref(false);
-const enableVideo = ref(true);
 const enablePreview = ref(true);
-const videoInputType = ref<"camera" | "screen">("screen");
+const videoInputType = ref<"camera" | "screen" | "none">("screen");
 const devices = ref<MediaDeviceInfo[]>([]);
 const audioDeviceName = ref("");
 const videoDeviceName = ref("");
@@ -205,7 +216,7 @@ async function getResultStream(updated: "video" | "audio" | "all") {
   }
 
   if (["video", "all"].includes(updated)) {
-    if (enableVideo) {
+    if (videoInputType.value != "none") {
       if (videoInputType.value == "camera") {
         cameraStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
         screenStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
@@ -243,7 +254,7 @@ async function getResultStream(updated: "video" | "audio" | "all") {
 async function refreshDeviceList() {
   if (
     enableAudio.value ||
-    (enableVideo.value && videoInputType.value == "camera")
+    (videoInputType.value != "none" && videoInputType.value == "camera")
   ) {
     if (devices.value.length == 0 || devices.value.some((d) => d.label == ""))
       emitter.emit("toast", "Refreshing device list...");
@@ -256,7 +267,7 @@ async function refreshDeviceList() {
         (
           await navigator.mediaDevices.getUserMedia({
             audio: enableAudio.value,
-            video: enableVideo.value && videoInputType.value == "camera",
+            video: videoInputType.value == "camera",
           })
         )
           .getTracks()

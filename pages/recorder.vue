@@ -1,5 +1,14 @@
 <template>
   <div class="mx-3">
+    <v-alert
+      type="info"
+      closable
+      text="The recording is local and will not be uploaded to any server."
+      class="mb-3"
+      density="compact"
+      variant="tonal"
+    ></v-alert>
+
     <!-- audio input -->
     <div class="d-flex align-center mb-3">
       <v-btn-toggle

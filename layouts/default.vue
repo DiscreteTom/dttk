@@ -229,6 +229,11 @@ const pages = ref([
     icon: "mdi-help-circle-outline",
     text: "Random Generator",
   },
+  {
+    to: "/recorder",
+    icon: "mdi-file-video-outline",
+    text: "Media Recorder",
+  },
 ]);
 
 function getURL() {

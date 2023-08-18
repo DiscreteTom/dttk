@@ -287,6 +287,7 @@ async function refreshDeviceList() {
   audioDeviceName.value = audioDeviceNames.value[0] || "";
   videoDeviceName.value = videoDeviceNames.value[0] || "";
   ready.value = true;
+  emitter.emit("toast", "Device list refreshed");
 }
 
 onMounted(() => {

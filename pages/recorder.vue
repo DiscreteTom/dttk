@@ -150,6 +150,13 @@
 </template>
 
 <script setup lang="ts">
+useDttkMeta({
+  title: "Media Recorder",
+  description:
+    "Online free media recorder. Record audio and video in the browser.",
+  path: "/recorder",
+});
+
 const emitter = useEmitter();
 
 /** If getting devices, ready is false. */

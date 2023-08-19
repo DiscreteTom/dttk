@@ -272,12 +272,16 @@ onMounted(() => {
 
   // apply theme
   themeManager.init();
-
-  // check pwa update
-  if (nuxt.$pwa.needRefresh) {
-    emitter.emit("toast", "New content available, please refresh the page.");
-  }
 });
+
+// check pwa update
+watch(
+  () => nuxt.$pwa.needRefresh,
+  (value) => {
+    if (value)
+      emitter.emit("toast", "New content available, please refresh the page.");
+  }
+);
 </script>
 
 <style scoped>

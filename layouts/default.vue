@@ -153,6 +153,17 @@
           >
           </v-btn>
         </ClientOnly>
+        <ClientOnly>
+          <v-btn
+            hide-details
+            block
+            class="my-2"
+            prepend-icon="mdi-update"
+            @click="$pwa?.updateServiceWorker(true)"
+            text="Force Update"
+          >
+          </v-btn>
+        </ClientOnly>
         <v-btn
           hide-details
           block
@@ -259,7 +270,7 @@ onMounted(() => {
   themeManager.init();
 
   // check pwa update
-  if (nuxt.$pwa.isInstalled && nuxt.$pwa.needRefresh) {
+  if (nuxt.$pwa.needRefresh) {
     emitter.emit("toast", "New content available, please refresh the page.");
   }
 });

@@ -101,6 +101,7 @@
           label="Invert toast color"
           v-model="settings.current.invertToastColor"
           hide-details
+          @update:model-value="emitter.emit('toast', 'Toast color inverted')"
         ></v-checkbox>
         <v-checkbox
           label="Follow system theme"

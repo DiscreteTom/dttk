@@ -3,7 +3,7 @@
     <v-alert
       type="info"
       closable
-      text="The recording is local and will not be uploaded to any server."
+      text="The recording is handled by the local browser and will not be uploaded to any server."
       class="mb-3"
       density="compact"
       variant="tonal"

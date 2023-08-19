@@ -32,6 +32,25 @@ export default defineNuxtConfig({
             gtag('config', 'G-8FDGDZJP59');`,
         },
       ],
+      link: [
+        {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "/apple-touch-icon.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "32x32",
+          href: "/favicon-32x32.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "16x16",
+          href: "/favicon-16x16.png",
+        },
+      ],
     },
   },
   modules: ["@vite-pwa/nuxt"],
@@ -40,7 +59,8 @@ export default defineNuxtConfig({
     manifest: {
       name: "DTTK",
       short_name: "DTTK",
-      theme_color: "#ffffff",
+      theme_color: "#000000",
+      background_color: "#000000",
       icons: [
         {
           src: "pwa-192x192.png",
@@ -58,6 +78,7 @@ export default defineNuxtConfig({
           type: "image/png",
         },
       ],
+      display: "standalone",
     },
     workbox: {
       navigateFallback: "/",

@@ -48,6 +48,7 @@
     <!-- video input -->
     <div class="d-flex align-center">
       <v-btn-toggle
+        divided
         mandatory
         v-model="videoInputType"
         :disabled="recording"
@@ -110,24 +111,36 @@
       <v-btn class="ml-3" :disabled="!recording" @click="stopRecording">
         End Recording
       </v-btn>
-      <v-switch
+      <v-checkbox
         label="Preview"
         v-model="enablePreview"
-        inset
         class="ml-3"
         @update:model-value="updatePreview('all')"
         :disabled="!ready"
+        hide-details
+        style="flex-grow: 0"
       />
-      <v-switch label="Mute Preview" v-model="mutePreview" inset class="ml-3" />
+      <v-checkbox
+        label="Mute Preview"
+        v-model="mutePreview"
+        class="ml-3"
+        style="flex-grow: 0"
+        hide-details
+      />
     </div>
 
-    <video
-      v-show="enablePreview"
-      autoplay
-      ref="preview"
-      :muted="mutePreview"
-      style="width: 100%"
-    />
+    <div v-show="enablePreview">
+      <v-card v-show="resultStream == null" style="width: 100%">
+        <v-card-text> No preview available. </v-card-text>
+      </v-card>
+      <video
+        v-show="resultStream"
+        autoplay
+        ref="preview"
+        :muted="mutePreview"
+        style="width: 100%"
+      />
+    </div>
   </div>
 </template>
 

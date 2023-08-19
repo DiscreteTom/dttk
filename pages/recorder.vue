@@ -66,6 +66,7 @@
           :value="'screen'"
           :disabled="videoInputType == 'screen'"
           prepend-icon="mdi-monitor"
+          @click="selectWindow"
         >
           Record Screen
         </v-btn>
@@ -88,15 +89,6 @@
         :disabled="recording"
         @update:model-value="updatePreview('video')"
       />
-      <v-btn
-        v-if="videoInputType == 'screen'"
-        :disabled="recording"
-        size="large"
-        @click="selectWindow"
-        prepend-icon="mdi-target"
-      >
-        SELECT WINDOW
-      </v-btn>
     </div>
 
     <!-- record controls -->
@@ -182,6 +174,7 @@ async function selectWindow() {
   } catch (e) {
     console.log(e);
     videoStream.value = null;
+    videoInputType.value = "none";
   }
   updatePreview("video");
 }

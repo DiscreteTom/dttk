@@ -79,14 +79,13 @@
         </v-btn>
       </v-btn-toggle>
       <v-select
-        v-if="videoInputType == 'camera'"
         label="Camera Device"
         :items="videoDeviceNames"
         v-model="videoDeviceName"
         variant="outlined"
         density="compact"
         hide-details
-        :disabled="recording"
+        :disabled="recording || videoInputType != 'camera'"
         @update:model-value="updatePreview('video')"
       />
     </div>

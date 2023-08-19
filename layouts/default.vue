@@ -118,7 +118,10 @@
           Toggle Theme
         </v-btn>
         <v-btn
-          @click="settings.reset"
+          @click="
+            settings.reset();
+            emitter.emit('toast', 'Reset settings');
+          "
           hide-details
           block
           class="my-2"

@@ -130,11 +130,13 @@
     </div>
 
     <div v-show="enablePreview">
-      <v-card v-show="resultStream == null" style="width: 100%">
-        <v-card-text> No preview available. </v-card-text>
+      <v-card v-show="videoStream == null" style="width: 100%">
+        <v-card-text>
+          No preview available. Please select a video source.
+        </v-card-text>
       </v-card>
       <video
-        v-show="resultStream"
+        v-show="videoStream != null"
         autoplay
         ref="preview"
         :muted="mutePreview"

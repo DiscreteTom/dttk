@@ -109,6 +109,12 @@
         :prepend-icon="recording ? 'mdi-stop' : 'mdi-record'"
       >
       </v-btn>
+      <v-btn
+        class="ml-3"
+        @click="reset"
+        text="Reset"
+        prepend-icon="mdi-restart"
+      ></v-btn>
       <v-checkbox
         label="Preview"
         v-model="enablePreview"
@@ -303,6 +309,19 @@ async function refreshDeviceList() {
   videoDeviceName.value = videoDeviceNames.value[0] || "";
   ready.value = true;
   emitter.emit("toast", "Device list refreshed");
+}
+
+function reset() {
+  enableAudio.value = false;
+  videoInputType.value = "screen";
+  enablePreview.value = true;
+  mutePreview.value = true;
+  videoStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
+  videoStream.value = null;
+  audioStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
+  audioStream.value = null;
+  resultStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
+  resultStream.value = null;
 }
 
 onMounted(() => {

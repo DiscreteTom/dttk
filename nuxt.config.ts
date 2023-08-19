@@ -17,6 +17,22 @@ export default defineNuxtConfig({
   },
   app: {
     cdnURL: "https://dttk.discretetom.com/",
+    head: {
+      script: [
+        {
+          src: "https://www.googletagmanager.com/gtag/js?id=G-8FDGDZJP59",
+          async: true,
+        },
+        {
+          innerHTML: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            
+            gtag('config', 'G-8FDGDZJP59');`,
+        },
+      ],
+    },
   },
   modules: ["@vite-pwa/nuxt"],
   pwa: {

@@ -18,18 +18,18 @@
         @update:model-value="updatePreview('audio')"
       >
         <v-btn
-          :value="true"
-          :disabled="enableAudio"
-          prepend-icon="mdi-microphone"
-        >
-          Enable Audio
-        </v-btn>
-        <v-btn
           :value="false"
           :disabled="!enableAudio"
           prepend-icon="mdi-microphone-off"
         >
           Disable Audio
+        </v-btn>
+        <v-btn
+          :value="true"
+          :disabled="enableAudio"
+          prepend-icon="mdi-microphone"
+        >
+          Enable Audio
         </v-btn>
       </v-btn-toggle>
       <v-select
@@ -56,6 +56,13 @@
         class="mr-3"
       >
         <v-btn
+          :value="'none'"
+          :disabled="videoInputType == 'none'"
+          prepend-icon="mdi-video-off"
+        >
+          No Video
+        </v-btn>
+        <v-btn
           :value="'screen'"
           :disabled="videoInputType == 'screen'"
           prepend-icon="mdi-monitor"
@@ -68,13 +75,6 @@
           prepend-icon="mdi-camera"
         >
           Record Camera
-        </v-btn>
-        <v-btn
-          :value="'none'"
-          :disabled="videoInputType == 'none'"
-          prepend-icon="mdi-video-off"
-        >
-          No Video
         </v-btn>
       </v-btn-toggle>
       <v-select
@@ -156,7 +156,7 @@ const emitter = useEmitter();
 /** If getting devices, ready is false. */
 const ready = ref(true);
 const enableAudio = ref(false);
-const videoInputType = ref<"camera" | "screen" | "none">("screen");
+const videoInputType = ref<"camera" | "screen" | "none">("none");
 const enablePreview = ref(true);
 const devices = ref<MediaDeviceInfo[]>([]);
 const audioDeviceName = ref("");

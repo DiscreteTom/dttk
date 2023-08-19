@@ -175,7 +175,10 @@ async function selectWindow() {
   videoStream.value?.getTracks().map((t) => t.stop()); // stop existing stream
   videoStream.value = null;
   try {
-    videoStream.value = await navigator.mediaDevices.getDisplayMedia();
+    videoStream.value = await navigator.mediaDevices.getDisplayMedia({
+      audio: true,
+      video: true,
+    });
   } catch (e) {
     console.log(e);
     videoStream.value = null;

@@ -90,7 +90,9 @@
       <v-btn
         v-if="videoInputType == 'screen'"
         :disabled="recording"
+        size="large"
         @click="selectWindow"
+        prepend-icon="mdi-target"
       >
         SELECT WINDOW
       </v-btn>

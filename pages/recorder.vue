@@ -103,13 +103,11 @@
     <div class="d-flex align-center">
       <v-btn
         color="primary"
-        :disabled="recording || !ready"
-        @click="startRecording"
+        :disabled="!ready || resultStream == null"
+        @click="recording ? stopRecording() : startRecording()"
+        :text="recording ? 'Stop Recording' : 'Start Recording'"
+        :prepend-icon="recording ? 'mdi-stop' : 'mdi-record'"
       >
-        Start Recording
-      </v-btn>
-      <v-btn class="ml-3" :disabled="!recording" @click="stopRecording">
-        End Recording
       </v-btn>
       <v-checkbox
         label="Preview"

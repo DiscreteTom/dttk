@@ -22,18 +22,18 @@
           :disabled="!enableAudio"
           prepend-icon="mdi-microphone-off"
         >
-          Disable Audio
+          No Mic
         </v-btn>
         <v-btn
           :value="true"
           :disabled="enableAudio"
           prepend-icon="mdi-microphone"
         >
-          Enable Audio
+          Enable Mic
         </v-btn>
       </v-btn-toggle>
       <v-select
-        label="Captured Audio"
+        label="Microphone Device"
         :items="audioDeviceNames"
         v-model="audioDeviceName"
         variant="outlined"
@@ -74,12 +74,12 @@
           :disabled="videoInputType == 'camera'"
           prepend-icon="mdi-camera"
         >
-          Record Camera
+          Camera
         </v-btn>
       </v-btn-toggle>
       <v-select
         v-if="videoInputType == 'camera'"
-        label="Captured Video Device"
+        label="Camera Device"
         :items="videoDeviceNames"
         v-model="videoDeviceName"
         variant="outlined"
@@ -316,7 +316,7 @@ async function refreshDeviceList() {
 
 function reset() {
   enableAudio.value = false;
-  videoInputType.value = "screen";
+  videoInputType.value = "none";
   enablePreview.value = true;
   mutePreview.value = true;
   videoStream.value?.getTracks().map((t) => t.stop()); // stop existing stream

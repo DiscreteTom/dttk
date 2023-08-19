@@ -96,7 +96,15 @@
         color="primary"
         :disabled="!ready || resultStream == null"
         @click="recording ? stopRecording() : startRecording()"
-        :text="recording ? 'Stop Recording' : 'Start Recording'"
+        :text="
+          recording
+            ? 'Stop Recording'
+            : videoStream
+            ? 'Start Recording (mp4)'
+            : audioStream
+            ? 'Start Recording (mp3)'
+            : 'Start Recording'
+        "
         :prepend-icon="recording ? 'mdi-stop' : 'mdi-record'"
       >
       </v-btn>
@@ -196,16 +204,27 @@ async function startRecording() {
 
   recording.value = true;
   chunks.length = 0; // clear
-  recorder.value = new MediaRecorder(resultStream.value, {
-    mimeType: "video/webm;codecs=vp9",
-  });
+  recorder.value = new MediaRecorder(
+    resultStream.value,
+    videoStream.value == null
+      ? undefined // for audio only recording
+      : {
+          // for video recording
+          mimeType: "video/webm;codecs=vp9",
+        }
+  );
   recorder.value.ondataavailable = (e) => {
     chunks.push(e.data);
   };
   recorder.value.onstop = () => {
     var a = document.createElement("a");
-    a.download = "capture.mp4";
-    a.href = URL.createObjectURL(new Blob(chunks));
+    a.download = videoStream.value == null ? "recording.mp3" : "recording.mp4";
+    a.href = URL.createObjectURL(
+      new Blob(
+        chunks,
+        videoStream.value == null ? { type: "audio/mpeg-3" } : undefined
+      )
+    );
     a.click();
   };
   recorder.value.start();

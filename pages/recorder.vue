@@ -10,17 +10,19 @@
     ></v-alert>
 
     <!-- audio input -->
-    <div class="d-flex align-center mb-3">
+    <div class="d-flex align-center mb-3 flex-wrap">
       <v-btn-toggle
         mandatory
         v-model="enableAudio"
         :disabled="recording"
         @update:model-value="updatePreview('audio')"
+        :class="display.smAndUp.value ? '' : 'flex-grow-1 mb-3'"
       >
         <v-btn
           :value="false"
           :disabled="!enableAudio"
           prepend-icon="mdi-microphone-off"
+          :class="display.smAndUp.value ? '' : 'flex-grow-1'"
         >
           No Mic
         </v-btn>
@@ -28,6 +30,7 @@
           :value="true"
           :disabled="enableAudio"
           prepend-icon="mdi-microphone"
+          :class="display.smAndUp.value ? '' : 'flex-grow-1'"
         >
           Enable Mic
         </v-btn>
@@ -40,25 +43,29 @@
         density="compact"
         hide-details
         :disabled="!enableAudio || recording"
-        class="ml-3"
+        :class="display.smAndUp.value ? 'ml-3' : 'flex-grow-1'"
+        :style="display.smAndUp.value ? '' : 'min-width: 100%'"
         @update:model-value="updatePreview('audio')"
       />
     </div>
 
     <!-- video input -->
-    <div class="d-flex align-center">
+    <div class="d-flex align-center flex-wrap mb-3">
+      <!-- TODO: use vertical btn toggle, #3 -->
       <v-btn-toggle
-        divided
+        :divided="display.smAndUp.value"
         mandatory
         v-model="videoInputType"
         :disabled="recording"
         @update:model-value="updatePreview('video')"
-        class="mr-3"
+        :class="display.smAndUp.value ? 'mr-3' : 'flex-wrap mb-3'"
+        :style="display.smAndUp.value ? '' : 'height: auto'"
       >
         <v-btn
           :value="'none'"
           :disabled="videoInputType == 'none'"
           prepend-icon="mdi-video-off"
+          :style="display.smAndUp.value ? '' : 'width: 100%; height: 48px'"
         >
           No Video
         </v-btn>
@@ -67,6 +74,7 @@
           :disabled="videoInputType == 'screen'"
           prepend-icon="mdi-monitor"
           @click="selectWindow"
+          :style="display.smAndUp.value ? '' : 'width: 100%; height: 48px'"
         >
           Record Screen
         </v-btn>
@@ -74,6 +82,7 @@
           :value="'camera'"
           :disabled="videoInputType == 'camera'"
           prepend-icon="mdi-camera"
+          :style="display.smAndUp.value ? '' : 'width: 100%; height: 48px'"
         >
           Camera
         </v-btn>
@@ -91,7 +100,7 @@
     </div>
 
     <!-- record controls -->
-    <div class="d-flex align-center">
+    <div class="d-flex align-center flex-wrap">
       <v-btn
         color="primary"
         :disabled="!ready || resultStream == null"
@@ -117,7 +126,7 @@
       <v-checkbox
         label="Preview"
         v-model="enablePreview"
-        class="ml-3"
+        :class="display.smAndUp.value ? 'ml-3' : ''"
         @update:model-value="updatePreview('all')"
         :disabled="!ready"
         hide-details
@@ -150,6 +159,8 @@
 </template>
 
 <script setup lang="ts">
+import { useDisplay } from "vuetify";
+
 useDttkMeta({
   title: "Media Recorder",
   description:
@@ -157,6 +168,7 @@ useDttkMeta({
   path: "/recorder",
 });
 
+const display = useDisplay();
 const emitter = useEmitter();
 
 /** If getting devices, ready is false. */

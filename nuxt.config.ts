@@ -79,6 +79,9 @@ export default defineNuxtConfig({
         },
       ],
       display: "standalone",
+      edge_side_panel: {
+        preferred_width: 480,
+      },
     },
     workbox: {
       navigateFallback: "/",

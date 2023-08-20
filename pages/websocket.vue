@@ -39,9 +39,11 @@
     </v-btn>
 
     <!-- input -->
-    <v-text-field
+    <v-textarea
       label=""
+      rows="1"
       v-model="input"
+      auto-grow
       variant="outlined"
       density="compact"
       clearable
@@ -49,7 +51,8 @@
       :disabled="ws == null"
       append-inner-icon="mdi-send"
       @click:append-inner="sendMessage"
-      @keyup.enter="sendMessage"
+      @keyup.ctrl.enter="sendMessage"
+      placeholder="Ctrl+Enter to send message"
     />
 
     <v-btn

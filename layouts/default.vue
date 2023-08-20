@@ -249,6 +249,11 @@ const pages = ref([
     icon: "mdi-file-video-outline",
     text: "Media Recorder",
   },
+  {
+    to: "/websocket",
+    icon: "mdi-swap-vertical",
+    text: "WebSocket Client",
+  },
 ]);
 
 function getURL() {

@@ -50,10 +50,10 @@
       hide-details
       :disabled="ws == null"
       @keyup.ctrl.enter="sendMessage"
-      placeholder="Ctrl+Enter to send message"
+      placeholder="Type message here"
     >
       <template v-slot:append-inner>
-        <v-tooltip text="Send" location="top">
+        <v-tooltip text="Send (Ctrl+Enter)" location="top">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"

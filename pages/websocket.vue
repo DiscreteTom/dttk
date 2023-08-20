@@ -49,11 +49,23 @@
       clearable
       hide-details
       :disabled="ws == null"
-      append-inner-icon="mdi-send"
-      @click:append-inner="sendMessage"
       @keyup.ctrl.enter="sendMessage"
       placeholder="Ctrl+Enter to send message"
-    />
+    >
+      <template v-slot:append-inner>
+        <v-tooltip text="Send" location="top">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              icon="mdi-send"
+              variant="plain"
+              @click="sendMessage"
+            >
+            </v-btn>
+          </template>
+        </v-tooltip>
+      </template>
+    </v-textarea>
 
     <v-btn
       @click="messages.length = 0"

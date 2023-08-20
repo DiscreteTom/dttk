@@ -94,7 +94,11 @@
         <div class="d-flex flex-wrap">
           <v-card-text
             :style="m.type == 'error' ? 'color:red' : undefined"
-            style="word-break: break-all; white-space: pre"
+            style="
+              word-break: break-all;
+              white-space: pre;
+              font-family: monospace;
+            "
           >
             {{ m.content }}
           </v-card-text>

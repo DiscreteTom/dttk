@@ -264,15 +264,17 @@ onMounted(() => {
   settings.load();
 
   // register toast event
-  emitter.on("toast", (message: string) => {
-    toast(message, {
-      action: {
-        buttonProps: {
-          icon: "mdi-close",
-          size: "small",
+  emitter.on("toast", (message) => {
+    if (typeof message == "string")
+      toast(message, {
+        action: {
+          buttonProps: {
+            icon: "mdi-close",
+            size: "small",
+          },
         },
-      },
-    });
+      });
+    else toast(message.message, message.props);
   });
 
   // apply theme
@@ -284,7 +286,21 @@ watch(
   () => nuxt.$pwa.needRefresh,
   (value) => {
     if (value)
-      emitter.emit("toast", "New content available, please refresh the page.");
+      emitter.emit("toast", {
+        message: "New content available, click to refresh the page.",
+        props: {
+          action: {
+            buttonProps: {
+              icon: "mdi-refresh",
+              size: "small",
+            },
+            onClick: async () => {
+              await nuxt.$pwa.updateServiceWorker(true);
+              window.location.reload();
+            },
+          },
+        },
+      });
   }
 );
 </script>

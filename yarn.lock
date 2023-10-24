@@ -1869,6 +1869,11 @@
   resolved "https://registry.npmmirror.com/@types/uuid/-/uuid-9.0.2.tgz#ede1d1b1e451548d44919dc226253e32a6952c4b"
   integrity sha512-kNnC1GFBLuhImSnV7w4njQkUiJi0ZXUycu1rUaouPqiKlXkh77JKgdRnTAp1x5eBwcIwbtI+3otwzuIDEuDoxQ==
 
+"@types/web-bluetooth@^0.0.19":
+  version "0.0.19"
+  resolved "https://registry.npmmirror.com/@types/web-bluetooth/-/web-bluetooth-0.0.19.tgz#9babaa5ae90487522bbdd9b3d9225e785d4dbf56"
+  integrity sha512-0Eoq1m8n3qXnV8tUJpL+Dgk09jJOp7IN1kXuwn65+i1VgxzNRW6sArEDrD9uPe5+wgBp3ZNYMAAtrminQf5RjA==
+
 "@unhead/dom@1.2.2":
   version "1.2.2"
   resolved "https://registry.npmmirror.com/@unhead/dom/-/dom-1.2.2.tgz#b5e8a5d9ab775f85405eee5c2ae9e981de897fcc"

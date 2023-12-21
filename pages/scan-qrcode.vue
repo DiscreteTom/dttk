@@ -57,7 +57,9 @@ function chooseFile() {
       reader.onload = () => {
         img.value!.src = reader.result as string;
         img.value!.onload = () => {
-          QrScanner.scanImage(img.value!, { returnDetailedScanResult: true })
+          QrScanner.scanImage(img.value!.src, {
+            returnDetailedScanResult: true,
+          })
             .then((res) => {
               result.value = res.data;
             })

@@ -259,11 +259,6 @@ const pages = ref([
     icon: "mdi-swap-vertical",
     text: "WebSocket Client",
   },
-  {
-    to: "/ble",
-    icon: "mdi-bluetooth-connect",
-    text: "BLE Debugger",
-  },
 ]);
 
 function getURL() {

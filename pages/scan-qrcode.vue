@@ -1,9 +1,9 @@
 <template>
   <div class="mx-3">
     <div class="d-flex flex-wrap justify-center flex-wrap">
-      <div class="d-flex flex-column align-center mr-3">
+      <div class="d-flex flex-column align-center mx-3">
         <img width="300" height="300" ref="img" />
-        <v-btn block @click="chooseFile" class="mt-2"> Choose a File </v-btn>
+        <v-btn block @click="chooseFile" class="my-2"> Choose a File </v-btn>
       </div>
       <div class="flex-grow-1 d-flex flex-column align-center">
         <v-card
@@ -27,7 +27,7 @@
             hide-details
           />
         </v-card>
-        <v-btn block style="width: 100%" @click="result = ''" class="mt-2">
+        <v-btn block style="width: 100%" @click="result = ''" class="my-2">
           Clear Result
         </v-btn>
       </div>

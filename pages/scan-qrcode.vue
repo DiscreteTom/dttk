@@ -2,7 +2,7 @@
   <div class="mx-3">
     <div class="d-flex flex-wrap justify-center flex-wrap">
       <div class="d-flex flex-column align-center mx-3">
-        <img width="300" height="300" ref="img" />
+        <img style="min-width: 300px" height="300" ref="img" />
         <v-btn block @click="chooseFile" class="my-2"> Choose a File </v-btn>
       </div>
 
@@ -32,6 +32,12 @@
           Clear Result
         </v-btn>
       </div>
+    </div>
+
+    <div class="d-flex justify-center">
+      <p style="color: grey; font-style: italic; font-weight: bold">
+        You can also paste image in this page. (Ctrl+V or Cmd+V)
+      </p>
     </div>
   </div>
 </template>
@@ -81,4 +87,29 @@ function chooseFile() {
   };
   input.click();
 }
+
+onMounted(() => {
+  // ref: https://stackoverflow.com/questions/6333814/how-does-the-paste-image-from-clipboard-functionality-work-in-gmail-and-google-c
+  document.onpaste = function (event: ClipboardEvent) {
+    var items = event.clipboardData!.items;
+    for (var index in items) {
+      var item = items[index];
+      if (item.kind === "file") {
+        var blob = item.getAsFile();
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          img.value!.src = event.target!.result as string; // data url!
+        };
+        reader.readAsDataURL(blob!);
+        return; // only paste 1 image
+      }
+    }
+    // no image found
+    emitter.emit("toast", "No image found in clipboard");
+  };
+});
+
+onUnmounted(() => {
+  document.onpaste = null;
+});
 </script>

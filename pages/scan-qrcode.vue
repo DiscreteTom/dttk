@@ -5,6 +5,7 @@
         <img width="300" height="300" ref="img" />
         <v-btn block @click="chooseFile" class="my-2"> Choose a File </v-btn>
       </div>
+
       <div class="flex-grow-1 d-flex flex-column align-center">
         <v-card
           style="width: 100%"
@@ -49,6 +50,21 @@ const emitter = useEmitter();
 const img = ref<HTMLImageElement | null>(null);
 const result = ref("");
 
+// scan image when image is loaded
+onMounted(() => {
+  img.value!.onload = () => {
+    QrScanner.scanImage(img.value!.src, {
+      returnDetailedScanResult: true,
+    })
+      .then((res) => {
+        result.value = res.data;
+      })
+      .catch((error) => {
+        result.value = error.toString();
+      });
+  };
+});
+
 function chooseFile() {
   const input = document.createElement("input");
   input.type = "file";
@@ -59,17 +75,6 @@ function chooseFile() {
       const reader = new FileReader();
       reader.onload = () => {
         img.value!.src = reader.result as string;
-        img.value!.onload = () => {
-          QrScanner.scanImage(img.value!.src, {
-            returnDetailedScanResult: true,
-          })
-            .then((res) => {
-              result.value = res.data;
-            })
-            .catch((error) => {
-              result.value = error.toString();
-            });
-        };
       };
       reader.readAsDataURL(file);
     }

@@ -15,7 +15,10 @@
         >
           <v-textarea
             v-model="result"
-            label="QR Code Content"
+            :label="
+              'QR Code Content' +
+              (result.length === 0 ? '' : ' (Click to Copy)')
+            "
             variant="solo"
             counter
             no-resize

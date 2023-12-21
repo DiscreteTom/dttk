@@ -230,6 +230,11 @@ const pages = ref([
     text: "QR Code Generator",
   },
   {
+    to: "/scan-qrcode",
+    icon: "mdi-qrcode-scan",
+    text: "QR Code Scanner",
+  },
+  {
     to: "/uuid",
     icon: "mdi-identifier",
     text: "UUID Generator",

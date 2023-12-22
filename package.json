@@ -19,12 +19,14 @@
     "nuxt": "^3.6.5"
   },
   "dependencies": {
+    "@guolao/vue-monaco-editor": "^1.4.1",
     "@mdi/font": "^7.2.96",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
     "buffer": "^6.0.3",
     "js-base64": "^3.7.5",
     "js-md5": "^0.7.3",
     "mitt": "^3.0.1",
+    "monaco-editor": "^0.45.0",
     "pako": "^2.1.0",
     "qr-scanner": "^1.4.2",
     "qrcode.vue": "^3.4.1",

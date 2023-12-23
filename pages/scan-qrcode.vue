@@ -3,7 +3,14 @@
     <div class="d-flex flex-wrap justify-center flex-wrap">
       <div class="d-flex flex-column align-center mx-3">
         <img style="min-width: 300px" height="300" ref="img" />
-        <v-btn block @click="chooseFile" class="my-2"> Choose a File </v-btn>
+        <v-btn
+          block
+          prepend-icon="mdi-folder-open-outline"
+          @click="chooseFile"
+          class="my-2"
+        >
+          Choose a File
+        </v-btn>
       </div>
 
       <div class="flex-grow-1 d-flex flex-column align-center">
@@ -28,7 +35,13 @@
             hide-details
           />
         </v-card>
-        <v-btn block style="width: 100%" @click="result = ''" class="my-2">
+        <v-btn
+          block
+          prepend-icon="mdi-trash-can-outline"
+          style="width: 100%"
+          @click="result = ''"
+          class="my-2"
+        >
           Clear Result
         </v-btn>
       </div>

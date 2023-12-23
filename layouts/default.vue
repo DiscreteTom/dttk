@@ -259,6 +259,11 @@ const pages = ref([
     icon: "mdi-swap-vertical",
     text: "WebSocket Client",
   },
+  {
+    to: "/js-playground",
+    icon: "mdi-application-braces-outline",
+    text: "JavaScript Playground",
+  },
 ]);
 
 function getURL() {

@@ -46,12 +46,24 @@
         :value="cell.id"
       >
         <v-expansion-panel-title>
+          <v-text-field
+            variant="solo"
+            @click.stop
+            @keyup.prevent.stop.space
+            @keydown.prevent.stop.space="cell.name += ' '"
+            hide-details
+            placeholder="Cell Name"
+            density="compact"
+            v-model="cell.name"
+            style="max-width: 500px"
+          ></v-text-field>
+          <v-spacer></v-spacer>
           <v-checkbox
             v-model="cell.readonly"
             @click.stop
             hide-details
             density="compact"
-            class="flex-grow-0"
+            class="flex-grow-0 ml-3"
           >
             <template v-slot:label>
               <div @click.stop>Readonly</div>
@@ -65,6 +77,8 @@
                   variant="plain"
                   icon="mdi-close"
                   @click.stop="cells.splice(index, 1)"
+                  class="ml-3"
+                  style="height: 40px"
                 >
                 </v-btn>
               </template>
@@ -146,6 +160,7 @@ const dependencies = ref([] as string[]);
 const dependencyCache = new Map<string, string>(); // URL => content
 
 const emptyCell = Object.freeze({
+  name: "",
   code: "",
   readonly: false,
 });

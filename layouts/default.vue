@@ -264,6 +264,11 @@ const pages = ref([
     icon: "mdi-application-braces-outline",
     text: "JavaScript Playground",
   },
+  {
+    to: "/video-player",
+    icon: "mdi-television-play",
+    text: "Video Player",
+  },
 ]);
 
 function getURL() {

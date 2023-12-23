@@ -98,7 +98,15 @@
       >
         Execute
       </v-btn>
-      <v-btn prepend-icon="mdi-share">Copy Sharing URL</v-btn>
+      <v-btn
+        prepend-icon="mdi-share"
+        @click="
+          toClipboard(generateSharingUrl());
+          emitter.emit('toast', 'Copied');
+        "
+      >
+        Copy Sharing URL
+      </v-btn>
     </div>
 
     <!-- output -->
@@ -117,6 +125,16 @@
 <script setup lang="ts">
 import type { editor } from "monaco-editor"; // use type only import to prevent SSR issue
 import { VueMonacoEditor } from "@guolao/vue-monaco-editor";
+import JSONCrush from "jsoncrush";
+import { toClipboard } from "@soerenmartius/vue3-clipboard";
+
+useDttkMeta({
+  title: "JavaScript Playground",
+  description: "A playground for JavaScript",
+  path: "/js-playground",
+});
+
+const emitter = useEmitter();
 
 const MONACO_EDITOR_OPTIONS: editor.IStandaloneEditorConstructionOptions = {
   automaticLayout: true,
@@ -128,7 +146,6 @@ const dependencies = ref([] as string[]);
 const dependencyCache = new Map<string, string>(); // URL => content
 
 const emptyCell = Object.freeze({
-  type: "code" as const,
   code: "",
   readonly: false,
 });
@@ -202,4 +219,30 @@ async function withMockLog(f: () => Promise<void>) {
   time.value = performance.now() - start;
   console.log = log;
 }
+
+// share & restore
+function generateSharingUrl() {
+  if (!process.client) return ""; // prevent SSR issue
+
+  const url = new URL(window.location.href);
+  const res = {
+    // clone value, disable responsive
+    dependencies: [...dependencies.value],
+    cells: cells.map((cell) => ({ ...cell })),
+    panels: [...panels.value],
+  };
+  const crushed = encodeURIComponent(JSONCrush.crush(JSON.stringify(res)));
+  url.searchParams.set("crushed", crushed);
+  return url.href;
+}
+onMounted(() => {
+  const url = new URL(window.location.href);
+  const crushed = url.searchParams.get("crushed");
+  if (crushed) {
+    const res = JSON.parse(JSONCrush.uncrush(decodeURIComponent(crushed)));
+    dependencies.value = res.dependencies;
+    cells.splice(0, cells.length, ...res.cells);
+    panels.value = res.panels;
+  }
+});
 </script>

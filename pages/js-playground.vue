@@ -49,19 +49,26 @@
     </v-expansion-panels>
     <div class="my-3">
       <v-btn @click="appendCell" prepend-icon="mdi-plus"> Add Cell </v-btn>
-      <v-btn prepend-icon="mdi-play" class="mx-3" @click="execute">
+      <v-btn
+        prepend-icon="mdi-play"
+        class="mx-3"
+        @click="execute"
+        :loading="executing"
+      >
         Execute
       </v-btn>
       <v-btn prepend-icon="mdi-share">Copy Sharing URL</v-btn>
     </div>
-    <v-card title="Output" class="my-3">
-      <v-card-text>{{ output }}</v-card-text>
+    <v-card :title="`Output (${time}ms)`" class="my-3">
+      <v-card-text>
+        <pre>{{ output }}</pre>
+      </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import { editor } from "monaco-editor";
+import type { editor } from "monaco-editor"; // use type only import to prevent SSR issue
 import { VueMonacoEditor } from "@guolao/vue-monaco-editor";
 
 const MONACO_EDITOR_OPTIONS: editor.IStandaloneEditorConstructionOptions = {
@@ -85,25 +92,41 @@ function appendCell() {
 }
 
 const output = ref("");
+const executing = ref(false);
+const time = ref(0);
 
 function execute() {
-  // ref: https://krasimirtsonev.com/blog/article/build-your-own-interactive-javascript-playground
-  output.value = "";
   const code = cells.map((cell) => cell.code).join("\n");
   console.log(code);
-  const f = new Function(code);
 
-  // mock console.log
-  const oldLog = console.log;
-  let value = "";
+  // ref: https://stackoverflow.com/questions/47945024/dynamically-create-async-function
+  // ref: https://krasimirtsonev.com/blog/article/build-your-own-interactive-javascript-playground
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  const f = new AsyncFunction(code) as () => Promise<void>;
+
+  // clear state
+  executing.value = true;
+  output.value = "";
+  time.value = 0;
+
+  withMockLog(f).finally(() => {
+    // update state
+    executing.value = false;
+  });
+}
+
+async function withMockLog(f: () => Promise<void>) {
+  const log = console.log;
   console.log = (...args: any[]) => {
-    // output.value += args.join(" ") + "\n";
-    value += args.join(" ") + "\n";
+    output.value += args.join(" ") + "\n";
   };
-  f();
-  console.log = oldLog;
-
-  console.log(value);
-  nextTick(() => (output.value = value));
+  const start = performance.now();
+  try {
+    await f();
+  } catch (e) {
+    output.value += `${e}`;
+  }
+  time.value = performance.now() - start;
+  console.log = log;
 }
 </script>

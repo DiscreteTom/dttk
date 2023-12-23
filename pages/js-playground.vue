@@ -3,7 +3,7 @@
     <!-- dependencies -->
     <v-expansion-panels class="my-3">
       <v-expansion-panel>
-        <v-expansion-panel-title> Dependencies </v-expansion-panel-title>
+        <v-expansion-panel-title ripple> Dependencies </v-expansion-panel-title>
         <v-expansion-panel-text>
           <div class="d-flex align-center" v-for="(dep, index) in dependencies">
             <v-text-field
@@ -39,13 +39,13 @@
     </v-expansion-panels>
 
     <!-- code cells -->
-    <v-expansion-panels multiple variant="accordion" v-model="panels">
+    <v-expansion-panels multiple v-model="panels">
       <v-expansion-panel
         v-for="(cell, index) in cells"
         :key="cell.id"
         :value="cell.id"
       >
-        <v-expansion-panel-title>
+        <v-expansion-panel-title ripple class="py-2">
           <v-text-field
             variant="solo"
             @click.stop

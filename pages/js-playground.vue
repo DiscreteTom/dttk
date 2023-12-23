@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- code cells -->
     <v-expansion-panels multiple variant="accordion" v-model="panels">
       <v-expansion-panel
         v-for="(cell, index) in cells"
@@ -47,6 +48,8 @@
         </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
+
+    <!-- action buttons -->
     <div class="my-3">
       <v-btn @click="appendCell" prepend-icon="mdi-plus"> Add Cell </v-btn>
       <v-btn
@@ -59,6 +62,8 @@
       </v-btn>
       <v-btn prepend-icon="mdi-share">Copy Sharing URL</v-btn>
     </div>
+
+    <!-- output -->
     <v-card :title="`Output (${time}ms)`" class="my-3">
       <v-card-text>
         <pre>{{ output }}</pre>

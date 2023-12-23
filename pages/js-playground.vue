@@ -64,7 +64,11 @@
     </div>
 
     <!-- output -->
-    <v-card :title="`Output (${time}ms)`" class="my-3">
+    <v-card
+      :title="`Output (${time}ms)`"
+      class="my-3"
+      v-show="output.length !== 0"
+    >
       <v-card-text>
         <pre>{{ output }}</pre>
       </v-card-text>

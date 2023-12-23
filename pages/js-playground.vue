@@ -1,5 +1,43 @@
 <template>
   <div>
+    <!-- dependencies -->
+    <v-expansion-panels class="my-3">
+      <v-expansion-panel>
+        <v-expansion-panel-title> Dependencies </v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <div class="d-flex align-center" v-for="(dep, index) in dependencies">
+            <v-text-field
+              :key="index"
+              variant="solo"
+              hide-details
+              label="CDN URL"
+              placeholder="https://cdn.jsdelivr.net/npm/package@version/file"
+              class="flex-grow-1"
+              v-model="dependencies[index]"
+            ></v-text-field>
+            <v-tooltip text="Delete" location="top">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  variant="plain"
+                  icon="mdi-close"
+                  @click="dependencies.splice(index, 1)"
+                >
+                </v-btn>
+              </template>
+            </v-tooltip>
+          </div>
+          <v-btn
+            @click="dependencies.push('')"
+            prepend-icon="mdi-plus"
+            text="Add"
+            class="my-3"
+            block
+          ></v-btn>
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </v-expansion-panels>
+
     <!-- code cells -->
     <v-expansion-panels multiple variant="accordion" v-model="panels">
       <v-expansion-panel
@@ -86,6 +124,9 @@ const MONACO_EDITOR_OPTIONS: editor.IStandaloneEditorConstructionOptions = {
   formatOnPaste: true,
 };
 
+const dependencies = ref([] as string[]);
+const dependencyCache = new Map<string, string>(); // URL => content
+
 const emptyCell = Object.freeze({
   type: "code" as const,
   code: "",
@@ -104,24 +145,47 @@ const output = ref("");
 const executing = ref(false);
 const time = ref(0);
 
-function execute() {
-  const code = cells.map((cell) => cell.code).join("\n");
-  console.log(code);
+async function execute() {
+  // clear state
+  executing.value = true;
+  output.value = "";
+  time.value = 0;
+
+  // load dependencies
+  const urls = dependencies.value.filter((url) => url.length !== 0);
+  const contents = [] as string[];
+  try {
+    contents.push(
+      ...(await Promise.all(
+        urls.map(async (url) => {
+          if (dependencyCache.has(url)) {
+            return dependencyCache.get(url)!;
+          }
+          output.value += `Loading ${url}...\n`;
+          const res = await fetch(url);
+          const content = await res.text();
+          dependencyCache.set(url, content);
+          return content;
+        })
+      ))
+    );
+  } catch (e) {
+    output.value += `${e}`;
+    executing.value = false;
+    return;
+  }
+
+  output.value = "";
+  const code = contents.concat(cells.map((cell) => cell.code)).join("\n");
 
   // ref: https://stackoverflow.com/questions/47945024/dynamically-create-async-function
   // ref: https://krasimirtsonev.com/blog/article/build-your-own-interactive-javascript-playground
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
   const f = new AsyncFunction(code) as () => Promise<void>;
 
-  // clear state
-  executing.value = true;
-  output.value = "";
-  time.value = 0;
-
-  withMockLog(f).finally(() => {
-    // update state
-    executing.value = false;
-  });
+  await withMockLog(f);
+  // update state
+  executing.value = false;
 }
 
 async function withMockLog(f: () => Promise<void>) {

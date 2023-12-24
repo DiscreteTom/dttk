@@ -237,7 +237,7 @@ async function startRecording() {
   };
   recorder.value.onstop = () => {
     var a = document.createElement("a");
-    a.download = videoStream.value == null ? "recording.mp3" : "recording.mp4";
+    a.download = videoStream.value == null ? "recording.mp3" : "recording.webm";
     a.href = URL.createObjectURL(
       new Blob(
         chunks,

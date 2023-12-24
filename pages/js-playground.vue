@@ -254,10 +254,14 @@ onMounted(() => {
   const url = new URL(window.location.href);
   const crushed = url.searchParams.get("crushed");
   if (crushed) {
-    const res = JSON.parse(JSONCrush.uncrush(decodeURIComponent(crushed)));
-    dependencies.value = res.dependencies;
-    cells.splice(0, cells.length, ...res.cells);
-    panels.value = res.panels;
+    try {
+      const res = JSON.parse(JSONCrush.uncrush(decodeURIComponent(crushed)));
+      dependencies.value = res.dependencies;
+      cells.splice(0, cells.length, ...res.cells);
+      panels.value = res.panels;
+    } catch (e) {
+      console.log(e);
+    }
   }
 });
 </script>

@@ -90,7 +90,7 @@
             :icon="
               m.from == 'server'
                 ? 'mdi-arrow-bottom-right-thick'
-                : 'mdi-account'
+                : 'mdi-robot-outline'
             "
           >
           </v-btn>

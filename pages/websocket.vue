@@ -90,7 +90,7 @@
             :icon="
               m.from == 'server'
                 ? 'mdi-arrow-bottom-right-thick'
-                : 'mdi-account'
+                : 'mdi-robot-outline'
             "
           >
           </v-btn>
@@ -199,7 +199,7 @@ function connect() {
       time: new Date(),
       from: "system",
       type: "error",
-      content: e.toString(),
+      content: e.type,
     });
   };
 }

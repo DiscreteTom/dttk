@@ -199,7 +199,7 @@ function connect() {
       time: new Date(),
       from: "system",
       type: "error",
-      content: e.toString(),
+      content: e.type,
     });
   };
 }

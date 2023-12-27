@@ -87,6 +87,7 @@ export default defineNuxtConfig({
       navigateFallback: "/",
       globPatterns: ["**/*.{js,css,html,png,svg,ico,woff,woff2}"],
       ignoreURLParametersMatching: [/.*/],
+      maximumFileSizeToCacheInBytes: 10485760, // 10MB
     },
     client: {
       installPrompt: true,

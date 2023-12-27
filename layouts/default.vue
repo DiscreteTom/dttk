@@ -15,16 +15,16 @@
         </v-tooltip>
         <ClientOnly>
           <v-tooltip
-            v-if="!$pwa?.isInstalled"
-            text="Install PWA"
+            v-if="$pwa !== undefined"
+            :text="!$pwa?.isPWAInstalled ? 'Install PWA' : 'PWA is Ready'"
             location="bottom"
           >
             <template v-slot:activator="{ props }">
               <v-btn
                 v-bind="props"
-                icon="mdi-download"
+                :icon="!$pwa.isPWAInstalled ? 'mdi-download' : 'mdi-check'"
                 class="hidden-sm-and-down"
-                @click="$pwa?.install()"
+                @click="$pwa.isPWAInstalled || $pwa?.install()"
               ></v-btn>
             </template>
           </v-tooltip>
@@ -135,20 +135,20 @@
             block
             class="my-2"
             :prepend-icon="
-              $pwa?.isInstalled
+              $pwa?.isPWAInstalled
                 ? $pwa?.needRefresh
                   ? 'mdi-refresh'
                   : 'mdi-check'
                 : 'mdi-download'
             "
-            :disabled="$pwa?.isInstalled && !$pwa?.needRefresh"
+            :disabled="$pwa?.isPWAInstalled && !$pwa?.needRefresh"
             @click="
-              $pwa?.isInstalled
+              $pwa?.isPWAInstalled
                 ? $pwa?.updateServiceWorker(true)
                 : $pwa?.install()
             "
             :text="
-              $pwa?.isInstalled
+              $pwa?.isPWAInstalled
                 ? $pwa?.needRefresh
                   ? 'Refresh to Update'
                   : 'PWA Installed'
@@ -201,7 +201,7 @@
 <script setup lang="ts">
 import { VSonner, toast } from "vuetify-sonner";
 
-const nuxt = useNuxtApp();
+const { $pwa } = useNuxtApp();
 const emitter = useEmitter();
 const settings = useSettings();
 const { followSystemTheme, ...themeManager } = useThemeManager();
@@ -298,7 +298,7 @@ onMounted(() => {
 
 // check pwa update
 watch(
-  () => nuxt.$pwa.needRefresh,
+  () => $pwa!.needRefresh,
   (value) => {
     if (value)
       emitter.emit("toast", {
@@ -310,7 +310,7 @@ watch(
               size: "small",
             },
             onClick: async () => {
-              await nuxt.$pwa.updateServiceWorker(true);
+              await $pwa!.updateServiceWorker(true);
               window.location.reload();
             },
           },

@@ -219,11 +219,14 @@ async function execute() {
   // ref: https://stackoverflow.com/questions/47945024/dynamically-create-async-function
   // ref: https://krasimirtsonev.com/blog/article/build-your-own-interactive-javascript-playground
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-  const f = new AsyncFunction(code) as () => Promise<void>;
-
-  await withMockLog(f);
-  // update state
-  executing.value = false;
+  try {
+    await withMockLog(new AsyncFunction(code) as () => Promise<void>);
+  } catch (e) {
+    output.value += `${e}`;
+  } finally {
+    // update state
+    executing.value = false;
+  }
 }
 
 async function withMockLog(f: () => Promise<void>) {

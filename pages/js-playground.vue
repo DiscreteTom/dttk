@@ -86,7 +86,13 @@
           </client-only>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <div style="height: 200px">
+          <div
+            :style="`
+            min-height: 200px;
+            height: ${cell.code.split('\n').length * 19}px;
+            max-height: 80vh;
+            `"
+          >
             <client-only>
               <vue-monaco-editor
                 v-model:value="cell.code"

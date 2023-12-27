@@ -77,7 +77,6 @@
         <v-list-item
           v-for="page in pages"
           :key="page.text"
-          exact
           :to="page.to"
           :prepend-icon="page.icon"
         >

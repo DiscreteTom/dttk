@@ -85,6 +85,9 @@ export default defineNuxtConfig({
     },
     workbox: {
       globPatterns: ["**/*.{js,css,html,png,svg,ico,woff,woff2}"],
+      // these URL parameters will be ignored when looking for cached resources
+      // use /.*/ to ignore all URL parameters
+      // which means we will always serve from cache
       ignoreURLParametersMatching: [/.*/],
       maximumFileSizeToCacheInBytes: 10485760, // 10MB
     },

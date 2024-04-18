@@ -109,6 +109,7 @@
             style="
               word-break: break-all;
               white-space: pre;
+              overflow: auto;
               font-family: monospace;
             "
           >

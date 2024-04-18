@@ -73,6 +73,9 @@
       class="my-2"
       prepend-icon="mdi-delete-outline"
       text="Clear History"
+      :style="clearHistoryBtnColor && `color:${clearHistoryBtnColor}`"
+      @mouseover="clearHistoryBtnColor = 'red'"
+      @mouseleave="clearHistoryBtnColor = undefined"
     >
     </v-btn>
 
@@ -143,6 +146,7 @@ const display = useDisplay();
 const url = ref("ws://localhost:8080");
 const subprotocols = ref("");
 const connecting = ref(false);
+const clearHistoryBtnColor = ref<undefined | string>(undefined);
 const ws = ref<WebSocket | null>(null);
 const input = ref("");
 const messages = ref<

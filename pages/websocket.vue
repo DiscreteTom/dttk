@@ -23,7 +23,6 @@
         hide-details
         placeholder="ship, done"
         :disabled="connecting || ws != null"
-        :class="display.smAndUp.value ? 'mr-3' : ''"
       />
     </div>
 

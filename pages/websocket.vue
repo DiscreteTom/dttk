@@ -23,7 +23,6 @@
         hide-details
         placeholder="ship, done"
         :disabled="connecting || ws != null"
-        :class="display.smAndUp.value ? 'mr-3' : ''"
       />
     </div>
 
@@ -67,14 +66,28 @@
       </template>
     </v-textarea>
 
-    <v-btn
-      @click="messages.length = 0"
-      block
-      class="my-2"
-      prepend-icon="mdi-delete-outline"
-      text="Clear History"
-    >
-    </v-btn>
+    <div class="d-flex flex-wrap">
+      <v-btn
+        @click="showFormattedJson = !showFormattedJson"
+        :class="display.smAndUp.value ? 'mr-2 my-2 flex-grow-1' : 'mt-2'"
+        prepend-icon="mdi-code-json"
+        :text="
+          showFormattedJson ? 'Show Unformatted Message' : 'Show Formatted JSON'
+        "
+        :style="display.smAndUp.value ? '' : 'width:100%'"
+      >
+      </v-btn>
+      <v-btn
+        @click="messages.length = 0"
+        class="my-2 flex-grow-1"
+        prepend-icon="mdi-delete-outline"
+        text="Clear History"
+        :style="clearHistoryBtnColor && `color:${clearHistoryBtnColor}`"
+        @mouseover="clearHistoryBtnColor = 'red'"
+        @mouseleave="clearHistoryBtnColor = undefined"
+      >
+      </v-btn>
+    </div>
 
     <!-- messages -->
     <div v-for="m in messages" :key="m.time.getTime()" class="my-2 d-flex">
@@ -109,10 +122,11 @@
             style="
               word-break: break-all;
               white-space: pre;
+              overflow: auto;
               font-family: monospace;
             "
           >
-            {{ m.content }}
+            {{ showFormattedJson ? m.json ?? m.content : m.content }}
           </v-card-text>
           <div class="d-flex flex-grow-1 align-end">
             <div class="flex-grow-1"></div>
@@ -141,7 +155,9 @@ const display = useDisplay();
 
 const url = ref("ws://localhost:8080");
 const subprotocols = ref("");
+const showFormattedJson = ref(false);
 const connecting = ref(false);
+const clearHistoryBtnColor = ref<undefined | string>(undefined);
 const ws = ref<WebSocket | null>(null);
 const input = ref("");
 const messages = ref<
@@ -150,6 +166,7 @@ const messages = ref<
     from: "system" | "server" | "client";
     type: "text" | "error";
     content: string;
+    json?: string;
   }[]
 >([]);
 
@@ -190,6 +207,7 @@ function connect() {
       from: "server",
       type: "text",
       content: e.data,
+      json: tryFormatJsonString(e.data),
     });
   };
   ws.value.onerror = (e) => {
@@ -215,7 +233,16 @@ function sendMessage() {
     from: "client",
     type: "text",
     content: input.value,
+    json: tryFormatJsonString(input.value),
   });
   input.value = "";
+}
+
+function tryFormatJsonString(s: string) {
+  try {
+    return JSON.stringify(JSON.parse(s), null, 2);
+  } catch {
+    return undefined;
+  }
 }
 </script>

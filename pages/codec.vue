@@ -54,7 +54,7 @@
           </v-tooltip>
         </v-card-title>
         <v-card-text>
-          {{ value || "Loading" }}
+          {{ value || "" }}
         </v-card-text>
       </v-card>
     </div>
